@@ -36,7 +36,6 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.CollectionStatistics;
 import org.apache.lucene.search.TermStatistics;
 import org.apache.lucene.util.BytesRef;
-import org.opensearch.LegacyESVersion;
 import org.opensearch.common.annotation.PublicApi;
 import org.opensearch.core.common.io.stream.StreamInput;
 import org.opensearch.core.common.io.stream.StreamOutput;
@@ -81,9 +80,7 @@ public class DfsSearchResult extends SearchPhaseResult {
         this.fieldStatistics = readFieldStats(in);
 
         maxDoc = in.readVInt();
-        if (in.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            setShardSearchRequest(in.readOptionalWriteable(ShardSearchRequest::new));
-        }
+        setShardSearchRequest(in.readOptionalWriteable(ShardSearchRequest::new));
     }
 
     public DfsSearchResult(ShardSearchContextId contextId, SearchShardTarget shardTarget, ShardSearchRequest shardSearchRequest) {
@@ -135,9 +132,7 @@ public class DfsSearchResult extends SearchPhaseResult {
         writeTermStats(out, termStatistics);
         writeFieldStats(out, fieldStatistics);
         out.writeVInt(maxDoc);
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            out.writeOptionalWriteable(getShardSearchRequest());
-        }
+        out.writeOptionalWriteable(getShardSearchRequest());
     }
 
     public static void writeFieldStats(StreamOutput out, final Map<String, CollectionStatistics> fieldStatistics) throws IOException {

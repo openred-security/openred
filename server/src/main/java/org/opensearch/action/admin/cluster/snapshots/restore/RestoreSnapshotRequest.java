@@ -32,7 +32,6 @@
 
 package org.opensearch.action.admin.cluster.snapshots.restore;
 
-import org.opensearch.LegacyESVersion;
 import org.opensearch.Version;
 import org.opensearch.action.ActionRequestValidationException;
 import org.opensearch.action.support.IndicesOptions;
@@ -156,10 +155,8 @@ public class RestoreSnapshotRequest extends ClusterManagerNodeRequest<RestoreSna
         }
         indexSettings = readSettingsFromStream(in);
         ignoreIndexSettings = in.readStringArray();
-        if (in.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            snapshotUuid = in.readOptionalString();
-        }
-        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
+        snapshotUuid = in.readOptionalString();
+        if (FeatureFlags.isEnabled(FeatureFlags.SEARCHABLE_SNAPSHOT) && in.getVersion().onOrAfter(Version.V_2_4_0)) {
             storageType = in.readEnum(StorageType.class);
         }
         if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
@@ -180,19 +177,10 @@ public class RestoreSnapshotRequest extends ClusterManagerNodeRequest<RestoreSna
         out.writeBoolean(includeGlobalState);
         out.writeBoolean(partial);
         out.writeBoolean(includeAliases);
-        if (out.getVersion().before(LegacyESVersion.V_7_7_0)) {
-            writeSettingsToStream(Settings.EMPTY, out); // formerly the unused settings field
-        }
         writeSettingsToStream(indexSettings, out);
         out.writeStringArray(ignoreIndexSettings);
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            out.writeOptionalString(snapshotUuid);
-        } else if (snapshotUuid != null) {
-            throw new IllegalStateException(
-                "restricting the snapshot UUID is forbidden in a cluster with version [" + out.getVersion() + "] nodes"
-            );
-        }
-        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
+        out.writeOptionalString(snapshotUuid);
+        if (FeatureFlags.isEnabled(FeatureFlags.SEARCHABLE_SNAPSHOT) && out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeEnum(storageType);
         }
         if (out.getVersion().onOrAfter(Version.V_1_0_0)) {

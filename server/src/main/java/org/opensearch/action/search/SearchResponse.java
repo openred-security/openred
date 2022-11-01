@@ -33,8 +33,8 @@
 package org.opensearch.action.search;
 
 import org.apache.lucene.search.TotalHits;
-import org.opensearch.LegacyESVersion;
 import org.opensearch.Version;
+import org.opensearch.action.ActionResponse;
 import org.opensearch.common.Nullable;
 import org.opensearch.common.annotation.PublicApi;
 import org.opensearch.common.unit.TimeValue;
@@ -122,17 +122,9 @@ public class SearchResponse extends ActionResponse implements StatusToXContentOb
         clusters = new Clusters(in);
         scrollId = in.readOptionalString();
         tookInMillis = in.readVLong();
-        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
-            phaseTook = in.readOptionalWriteable(PhaseTook::new);
-        } else {
-            phaseTook = null;
-        }
+        phaseTook = null;
         skippedShards = in.readVInt();
-        if (in.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            pointInTimeId = in.readOptionalString();
-        } else {
-            pointInTimeId = null;
-        }
+        pointInTimeId = in.readOptionalString();
     }
 
     public SearchResponse(
@@ -571,9 +563,7 @@ public class SearchResponse extends ActionResponse implements StatusToXContentOb
             out.writeOptionalWriteable(phaseTook);
         }
         out.writeVInt(skippedShards);
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            out.writeOptionalString(pointInTimeId);
-        }
+        out.writeOptionalString(pointInTimeId);
     }
 
     @Override

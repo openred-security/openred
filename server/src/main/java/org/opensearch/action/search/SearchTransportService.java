@@ -495,10 +495,6 @@ public class SearchTransportService {
         }
     }
 
-    static boolean keepStatesInContext(Version version) {
-        return version.before(LegacyESVersion.V_7_10_0);
-    }
-
     public static void registerRequestHandler(TransportService transportService, SearchService searchService) {
         transportService.registerRequestHandler(
             FREE_CONTEXT_SCROLL_ACTION_NAME,
@@ -555,7 +551,7 @@ public class SearchTransportService {
             ShardSearchRequest::new,
             (request, channel, task) -> searchService.executeDfsPhase(
                 request,
-                keepStatesInContext(channel.getVersion()),
+                false,
                 (SearchShardTask) task,
                 new ChannelActionListener<>(channel, DFS_ACTION_NAME, request)
             )
@@ -573,7 +569,7 @@ public class SearchTransportService {
             (request, channel, task) -> {
                 searchService.executeQueryPhase(
                     request,
-                    keepStatesInContext(channel.getVersion()),
+                    false,
                     (SearchShardTask) task,
                     new ChannelActionListener<>(channel, QUERY_ACTION_NAME, request)
                 );

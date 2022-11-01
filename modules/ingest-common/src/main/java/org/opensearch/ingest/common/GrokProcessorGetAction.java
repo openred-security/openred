@@ -31,7 +31,7 @@
 
 package org.opensearch.ingest.common;
 
-import org.opensearch.LegacyESVersion;
+import org.opensearch.action.ActionListener;
 import org.opensearch.action.ActionRequest;
 import org.opensearch.action.ActionRequestValidationException;
 import org.opensearch.action.ActionType;
@@ -79,7 +79,7 @@ public class GrokProcessorGetAction extends ActionType<GrokProcessorGetAction.Re
 
         Request(StreamInput in) throws IOException {
             super(in);
-            this.sorted = in.getVersion().onOrAfter(LegacyESVersion.V_7_10_0) ? in.readBoolean() : false;
+            this.sorted = in.readBoolean();
         }
 
         @Override
@@ -90,9 +90,7 @@ public class GrokProcessorGetAction extends ActionType<GrokProcessorGetAction.Re
         @Override
         public void writeTo(StreamOutput out) throws IOException {
             super.writeTo(out);
-            if (out.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-                out.writeBoolean(sorted);
-            }
+            out.writeBoolean(sorted);
         }
 
         public boolean sorted() {
