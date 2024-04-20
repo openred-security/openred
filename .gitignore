@@ -1,0 +1,48 @@
+*.so
+*.so.*
+*.o
+*.a
+*.dSYM
+.DS_Store
+*.pyc
+*.dll
+*.exe
+*.dylib
+
+# Auto generated build files
+Config.OS
+selinux/*.mod
+selinux/*.pp
+**/build/*
+
+# Compiled programs
+openred-fim
+
+# Windows agent
+win32/*.exe
+
+# Eclipse files
+.cproject
+.project
+.settings/
+
+# Visual Studio Code files
+.vscode
+
+# temporary vim files
+*.swp
+*.swo
+
+# patch files
+*.rej
+*.orig
+
+# unit tests
+unit_tests/build/*
+
+# runtime folders 
+queue
+lib
+
+# external sources
+plugins/*/external/
