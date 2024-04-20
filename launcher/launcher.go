@@ -21,7 +21,7 @@ func Init(ctx context.Context) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	Add(ctx, "sample", current_path+"/plugins/sample/sample", []string{" "})
+	Add(ctx, "sample", current_path+"/plugins/sample/plugin-sample", []string{" "})
 }
 
 func Add(ctx context.Context, name string, path string, arguments []string) {
@@ -40,7 +40,7 @@ func Run(ctx context.Context, plugin plugin) {
 		process.WithContext(ctx),
 		process.WithArgs(plugin.arguments),
 		process.WithCmdOptions(func(c *exec.Cmd) error {
-			//c.Stdout = os.Stdout
+			c.Stdout = os.Stdout
 			c.Stderr = os.Stderr
 			return nil
 		}))

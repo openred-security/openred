@@ -16,7 +16,8 @@ selinux/*.pp
 **/build/*
 
 # Compiled programs
-openred-fim
+openred-agent
+plugin-*
 
 # Windows agent
 win32/*.exe
