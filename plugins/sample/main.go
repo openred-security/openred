@@ -10,7 +10,7 @@ import (
 func main() {
     fmt.Println("Hello, World!")
 
-	unixSocket := "/var/run/my_socket.sock"
+	unixSocket := "/tmp/echo.sock"
 	// Create a Go's http.Transport so we can set it in resty.
 transport := http.Transport{
 	Dial: func(_, _ string) (net.Conn, error) {
