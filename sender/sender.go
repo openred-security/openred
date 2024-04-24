@@ -1,35 +1,35 @@
 package sender
 
 import (
-    "context"
-    "crypto/tls"
-	"net/http"
-    "strings"
+	"context"
+	"crypto/tls"
 	"fmt"
+	"net/http"
 	"os"
+	"strings"
+
 	opensearch "github.com/opensearch-project/opensearch-go"
-    opensearchapi "github.com/opensearch-project/opensearch-go/opensearchapi"
+	opensearchapi "github.com/opensearch-project/opensearch-go/opensearchapi"
 )
 
-func New(){
+func New() *opensearch.Client {
 
 	client, err := opensearch.NewClient(opensearch.Config{
-        Transport: &http.Transport{
-            TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-        },
-        Addresses: []string{"http://localhost:9200"},
-    })
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+		Addresses: []string{"http://localhost:9200"},
+	})
 
 	if err != nil {
-        fmt.Println("failed to connect", err)
-        os.Exit(1)
-    }
+		fmt.Println("failed to connect", err)
+		os.Exit(1)
+	}
 
-
-		return client
+	return client
 }
 
-funct CreateIndex(client Client){
+func CreateIndex(client *opensearch.Client) {
 
 	settings := strings.NewReader(`{
 		'settings': {
@@ -41,33 +41,30 @@ funct CreateIndex(client Client){
 		}`)
 
 	res := opensearchapi.IndicesCreateRequest{
-		Index: "go-test-index1", 
+		Index: "go-test-index1",
 		Body:  settings,
 	}
-    fmt.Println(res)
-	
+	fmt.Println(res)
+
 }
-func Sender(client Client, message string) {
+func Send(client *opensearch.Client, message string) {
 	fmt.Println(message)
 	document := strings.NewReader(`{
 		"title": "Moneyball",
 		"director": "Bennett Miller",
 		"year": "2011"
 	}`)
-	
-	docId := "1"
+
 	req := opensearchapi.IndexRequest{
-		Index:      "go-test-index1",
-		DocumentID: docId,
-		Body:       document,
+		Index: "go-test-index1",
+		Body:  document,
 	}
 	insertResponse, err := req.Do(context.Background(), client)
 
 	if err != nil {
-        fmt.Println("failed to perform bulk operations", err)
-        os.Exit(1)
-    }
-    fmt.Println("Performing bulk operations")
-    fmt.Println(insertResponse)
+		fmt.Println("failed to perform bulk operations", err)
+	}
+	fmt.Println("Performing bulk operations")
+	fmt.Println(insertResponse)
 
 }
