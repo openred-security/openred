@@ -148,13 +148,9 @@ public class BwcVersions {
         currentVersion = allVersions.last();
 
         groupByMajor = allVersions.stream()
-            // We only care about the last 2 majors when it comes to BWC.
-            // It might take us time to remove the older ones from versionLines, so we allow them to exist.
-            // Adjust the major number since OpenSearch 1.x is released after predecessor version 7.x
+            // openred: Adjusting major compatibility. No need for BWC for OS or ES.
             .filter(
-                version -> (version.getMajor() == 1 ? 7 : version.getMajor()) > (currentVersion.getMajor() == 1
-                    ? 7
-                    : currentVersion.getMajor()) - 2
+                version -> (version.getMajor()) > (currentVersion.getMajor()) - 2
             )
             .collect(Collectors.groupingBy(Version::getMajor, Collectors.toList()));
 
@@ -382,12 +378,9 @@ public class BwcVersions {
         List<Version> result = Stream.concat(groupByMajor.get(prevMajor).stream(), groupByMajor.get(currentMajor).stream())
             .filter(version -> version.equals(currentVersion) == false)
             .collect(Collectors.toList());
-        if (currentMajor == 1) {
-            // add 6.x compatible for OpenSearch 1.0.0
-            return unmodifiableList(Stream.concat(groupByMajor.get(prevMajor - 1).stream(), result.stream()).collect(Collectors.toList()));
-        } else if (currentMajor == 2) {
-            // add 7.x compatible for OpenSearch 2.0.0
-            return unmodifiableList(Stream.concat(groupByMajor.get(7).stream(), result.stream()).collect(Collectors.toList()));
+        if (currentMajor == 2) {
+            // Add 1x openred compatible with 2.x openred
+            return unmodifiableList(Stream.concat(groupByMajor.get(1).stream(), result.stream()).collect(Collectors.toList()));
         }
         return unmodifiableList(result);
     }
@@ -438,7 +431,7 @@ public class BwcVersions {
     }
 
     private int getPreviousMajor(int currentMajor) {
-        return currentMajor == 1 ? 7 : currentMajor - 1;
+        return currentMajor - 1;
     }
 
 }
