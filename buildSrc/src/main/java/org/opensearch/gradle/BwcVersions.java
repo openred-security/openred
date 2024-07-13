@@ -375,20 +375,15 @@ public class BwcVersions {
     public List<Version> getIndexCompatible() {
         int currentMajor = currentVersion.getMajor();
         int prevMajor = getPreviousMajor(currentMajor);
-        List<Version> result = Stream.concat(groupByMajor.get(prevMajor).stream(), groupByMajor.get(currentMajor).stream())
+        return Stream.concat(groupByMajor.get(prevMajor).stream(), groupByMajor.get(currentMajor).stream())
             .filter(version -> version.equals(currentVersion) == false)
-            .collect(Collectors.toList());
-        if (currentMajor == 2) {
-            // Add 1x openred compatible with 2.x openred
-            return unmodifiableList(Stream.concat(groupByMajor.get(1).stream(), result.stream()).collect(Collectors.toList()));
-        }
-        return unmodifiableList(result);
+            .collect(Collectors.toUnmodifiableList());
     }
 
     public List<Version> getWireCompatible() {
         List<Version> wireCompat = new ArrayList<>();
         int currentMajor = currentVersion.getMajor();
-        int lastMajor = currentMajor == 1 ? 6 : currentMajor == 2 ? 7 : currentMajor - 1;
+        int lastMajor = currentMajor - 1;
         List<Version> lastMajorList = groupByMajor.get(lastMajor);
         if (lastMajorList == null) {
             throw new IllegalStateException("Expected to find a list of versions for version: " + lastMajor);
@@ -396,20 +391,6 @@ public class BwcVersions {
         int minor = lastMajorList.get(lastMajorList.size() - 1).getMinor();
         for (int i = lastMajorList.size() - 1; i > 0 && lastMajorList.get(i).getMinor() == minor; --i) {
             wireCompat.add(lastMajorList.get(i));
-        }
-
-        // if current is OpenSearch 1.0.0 add all of the 7.x line:
-        if (currentMajor == 1) {
-            List<Version> previousMajor = groupByMajor.get(7);
-            for (Version v : previousMajor) {
-                wireCompat.add(v);
-            }
-        } else if (currentMajor == 2) {
-            // add all of the 1.x line:
-            List<Version> previousMajor = groupByMajor.get(1);
-            for (Version v : previousMajor) {
-                wireCompat.add(v);
-            }
         }
 
         wireCompat.addAll(groupByMajor.get(currentMajor));
