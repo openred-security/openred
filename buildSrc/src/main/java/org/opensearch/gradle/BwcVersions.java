@@ -277,7 +277,7 @@ public class BwcVersions {
         if (currentVersion.getMajor() != 1) {
             final Version latestOfPreviousMajor = getLatestVersionByKey(
                 this.groupByMajor,
-                currentVersion.getMajor() == 1 ? 7 : currentVersion.getMajor() - 1
+                currentVersion.getMajor() - 1
             );
             unreleased.add(latestOfPreviousMajor);
             if (latestOfPreviousMajor.getRevision() == 0) {
@@ -375,7 +375,8 @@ public class BwcVersions {
     public List<Version> getIndexCompatible() {
         int currentMajor = currentVersion.getMajor();
         int prevMajor = getPreviousMajor(currentMajor);
-        return Stream.concat(groupByMajor.get(prevMajor).stream(), groupByMajor.get(currentMajor).stream())
+
+        return Stream.concat(groupByMajor.getOrDefault(prevMajor, Collections.emptyList()).stream(), groupByMajor.getOrDefault(currentMajor, Collections.emptyList()).stream())
             .filter(version -> version.equals(currentVersion) == false)
             .collect(Collectors.toUnmodifiableList());
     }
