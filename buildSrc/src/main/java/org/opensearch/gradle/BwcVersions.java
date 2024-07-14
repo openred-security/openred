@@ -384,19 +384,21 @@ public class BwcVersions {
     public List<Version> getWireCompatible() {
         List<Version> wireCompat = new ArrayList<>();
         int currentMajor = currentVersion.getMajor();
-        int lastMajor = currentMajor - 1;
-        List<Version> lastMajorList = groupByMajor.get(lastMajor);
-        if (lastMajorList == null) {
-            throw new IllegalStateException("Expected to find a list of versions for version: " + lastMajor);
-        }
-        int minor = lastMajorList.get(lastMajorList.size() - 1).getMinor();
-        for (int i = lastMajorList.size() - 1; i > 0 && lastMajorList.get(i).getMinor() == minor; --i) {
-            wireCompat.add(lastMajorList.get(i));
-        }
+        if (currentMajor > 1) {
+            int lastMajor = currentMajor - 1;
+            List<Version> lastMajorList = groupByMajor.get(lastMajor);
+            if (lastMajorList == null) {
+                throw new IllegalStateException("Expected to find a list of versions for version: " + lastMajor);
+            }
+            int minor = lastMajorList.get(lastMajorList.size() - 1).getMinor();
+            for (int i = lastMajorList.size() - 1; i > 0 && lastMajorList.get(i).getMinor() == minor; --i) {
+                wireCompat.add(lastMajorList.get(i));
+            }
 
-        wireCompat.addAll(groupByMajor.get(currentMajor));
-        wireCompat.remove(currentVersion);
-        wireCompat.sort(Version::compareTo);
+            wireCompat.addAll(groupByMajor.get(currentMajor));
+            wireCompat.remove(currentVersion);
+            wireCompat.sort(Version::compareTo);
+        }
         return unmodifiableList(wireCompat);
     }
 
