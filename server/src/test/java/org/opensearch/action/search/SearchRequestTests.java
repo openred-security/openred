@@ -116,7 +116,7 @@ public class SearchRequestTests extends AbstractSearchTestCase {
         assertEquals(searchRequest.getAbsoluteStartMillis(), deserializedRequest.getAbsoluteStartMillis());
         assertEquals(searchRequest.isFinalReduce(), deserializedRequest.isFinalReduce());
 
-        if (version.onOrAfter(Version.V_1_1_0)) {
+        if (version.onOrAfter(Version.V_1_0_0)) {
             assertEquals(searchRequest.getCancelAfterTimeInterval(), deserializedRequest.getCancelAfterTimeInterval());
         } else {
             assertNull(deserializedRequest.getCancelAfterTimeInterval());

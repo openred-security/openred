@@ -99,7 +99,7 @@ public class ResizeRequest extends AcknowledgedRequest<ResizeRequest> implements
         sourceIndex = in.readString();
         type = in.readEnum(ResizeType.class);
         copySettings = in.readOptionalBoolean();
-        if (in.getVersion().onOrAfter(Version.V_2_5_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             maxShardSize = in.readOptionalWriteable(ByteSizeValue::new);
         }
     }
@@ -188,7 +188,7 @@ public class ResizeRequest extends AcknowledgedRequest<ResizeRequest> implements
         }
         out.writeEnum(type);
         out.writeOptionalBoolean(copySettings);
-        if (out.getVersion().onOrAfter(Version.V_2_5_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(maxShardSize);
         }
     }

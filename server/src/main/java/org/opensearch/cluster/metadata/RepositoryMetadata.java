@@ -183,7 +183,7 @@ public class RepositoryMetadata implements Writeable {
             generation = RepositoryData.UNKNOWN_REPO_GEN;
             pendingGeneration = RepositoryData.EMPTY_REPO_GEN;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             cryptoMetadata = in.readOptionalWriteable(CryptoMetadata::new);
         } else {
             cryptoMetadata = null;
@@ -204,7 +204,7 @@ public class RepositoryMetadata implements Writeable {
             out.writeLong(generation);
             out.writeLong(pendingGeneration);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(cryptoMetadata);
         }
     }

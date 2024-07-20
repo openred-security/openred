@@ -72,7 +72,7 @@ public class GetMappingsResponse extends ActionResponse implements ToXContentFra
         final Map<String, MappingMetadata> indexMapBuilder = new HashMap<>();
         for (int i = 0; i < size; i++) {
             String index = in.readString();
-            if (in.getVersion().before(Version.V_2_0_0)) {
+            if (in.getVersion().before(Version.V_0_0_0)) {
                 int mappingCount = in.readVInt();
                 if (mappingCount == 0) {
                     indexMapBuilder.put(index, MappingMetadata.EMPTY_MAPPINGS);
@@ -106,7 +106,7 @@ public class GetMappingsResponse extends ActionResponse implements ToXContentFra
         out.writeVInt(mappings.size());
         for (Map.Entry<String, MappingMetadata> indexEntry : mappings.entrySet()) {
             out.writeString(indexEntry.getKey());
-            if (out.getVersion().before(Version.V_2_0_0)) {
+            if (out.getVersion().before(Version.V_0_0_0)) {
                 out.writeVInt(indexEntry.getValue() == MappingMetadata.EMPTY_MAPPINGS ? 0 : 1);
                 if (indexEntry.getValue() != MappingMetadata.EMPTY_MAPPINGS) {
                     out.writeString(MapperService.SINGLE_MAPPING_NAME);

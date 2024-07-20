@@ -111,14 +111,14 @@ public class ForceMergeRequestTests extends OpenSearchTestCase {
                     boolean onlyExpungeDeletes = in.readBoolean();
                     boolean flush = in.readBoolean();
                     boolean primaryOnly = false;
-                    if (version.onOrAfter(Version.V_2_13_0)) {
+                    if (version.onOrAfter(Version.V_1_0_0)) {
                         primaryOnly = in.readBoolean();
                     }
                     String forceMergeUUID = in.readOptionalString();
                     assertEquals(sample.maxNumSegments(), maxNumSegments);
                     assertEquals(sample.onlyExpungeDeletes(), onlyExpungeDeletes);
                     assertEquals(sample.flush(), flush);
-                    if (version.onOrAfter(Version.V_2_13_0)) {
+                    if (version.onOrAfter(Version.V_1_0_0)) {
                         assertEquals(sample.primaryOnly(), primaryOnly);
                     }
                     assertEquals(sample.forceMergeUUID(), forceMergeUUID);
@@ -138,7 +138,7 @@ public class ForceMergeRequestTests extends OpenSearchTestCase {
                 out.writeInt(sample.maxNumSegments());
                 out.writeBoolean(sample.onlyExpungeDeletes());
                 out.writeBoolean(sample.flush());
-                if (version.onOrAfter(Version.V_2_13_0)) {
+                if (version.onOrAfter(Version.V_1_0_0)) {
                     out.writeBoolean(sample.primaryOnly());
                 }
                 out.writeOptionalString(sample.forceMergeUUID());
@@ -152,7 +152,7 @@ public class ForceMergeRequestTests extends OpenSearchTestCase {
                 assertEquals(sample.maxNumSegments(), deserializedRequest.maxNumSegments());
                 assertEquals(sample.onlyExpungeDeletes(), deserializedRequest.onlyExpungeDeletes());
                 assertEquals(sample.flush(), deserializedRequest.flush());
-                if (version.onOrAfter(Version.V_2_13_0)) {
+                if (version.onOrAfter(Version.V_1_0_0)) {
                     assertEquals(sample.primaryOnly(), deserializedRequest.primaryOnly());
                 }
                 assertEquals(sample.forceMergeUUID(), deserializedRequest.forceMergeUUID());

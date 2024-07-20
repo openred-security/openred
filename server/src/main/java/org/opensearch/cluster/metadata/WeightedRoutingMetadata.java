@@ -82,7 +82,7 @@ public class WeightedRoutingMetadata extends AbstractNamedDiffable<Metadata.Cust
 
     @Override
     public Version getMinimalSupportedVersion() {
-        return Version.V_2_4_0;
+        return Version.V_1_0_0;
     }
 
     @Override

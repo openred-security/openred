@@ -80,7 +80,7 @@ public class PutRepositoryRequest extends AcknowledgedRequest<PutRepositoryReque
         settings = readSettingsFromStream(in);
         verify = in.readBoolean();
 
-        if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             cryptoSettings = in.readOptionalWriteable(CryptoSettings::new);
         }
     }
@@ -277,7 +277,7 @@ public class PutRepositoryRequest extends AcknowledgedRequest<PutRepositoryReque
         out.writeString(type);
         writeSettingsToStream(settings, out);
         out.writeBoolean(verify);
-        if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(cryptoSettings);
         }
     }

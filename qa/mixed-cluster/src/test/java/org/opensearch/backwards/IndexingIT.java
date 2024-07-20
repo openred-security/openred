@@ -119,7 +119,7 @@ public class IndexingIT extends OpenSearchRestTestCase {
      * @throws Exception
      */
     public void testIndexingWithPrimaryOnBwcNodes() throws Exception {
-        if (UPGRADE_FROM_VERSION.before(Version.V_2_4_0)) {
+        if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
             logger.info("--> Skip test for version {} where segment replication feature is not available", UPGRADE_FROM_VERSION);
             return;
         }
@@ -171,7 +171,7 @@ public class IndexingIT extends OpenSearchRestTestCase {
      * @throws Exception
      */
     public void testIndexingWithReplicaOnBwcNodes() throws Exception {
-        if (UPGRADE_FROM_VERSION.before(Version.V_2_4_0)) {
+        if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
             logger.info("--> Skip test for version {} where segment replication feature is not available", UPGRADE_FROM_VERSION);
             return;
         }
@@ -418,7 +418,7 @@ public class IndexingIT extends OpenSearchRestTestCase {
 
     public void testSyncedFlushTransition() throws Exception {
         Nodes nodes = buildNodeAndVersions();
-        assumeTrue("bwc version is on 1.x or Legacy 7.x", nodes.getBWCVersion().before(Version.V_2_0_0));
+        assumeTrue("bwc version is on 1.x or Legacy 7.x", nodes.getBWCVersion().before(Version.V_0_0_0));
         assumeFalse("no new node found", nodes.getNewNodes().isEmpty());
         assumeFalse("no bwc node found", nodes.getBWCNodes().isEmpty());
         // Allocate shards to new nodes then verify synced flush requests processed by old nodes/new nodes

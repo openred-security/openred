@@ -84,14 +84,14 @@ public class ReplicationCheckpoint implements Writeable, Comparable<ReplicationC
         primaryTerm = in.readLong();
         segmentsGen = in.readLong();
         segmentInfosVersion = in.readLong();
-        if (in.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             length = in.readLong();
             codec = in.readString();
         } else {
             length = 0L;
             codec = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             this.metadataMap = in.readMap(StreamInput::readString, StoreFileMetadata::new);
         } else {
             this.metadataMap = Collections.emptyMap();
@@ -152,11 +152,11 @@ public class ReplicationCheckpoint implements Writeable, Comparable<ReplicationC
         out.writeLong(primaryTerm);
         out.writeLong(segmentsGen);
         out.writeLong(segmentInfosVersion);
-        if (out.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeLong(length);
             out.writeString(codec);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeMap(metadataMap, StreamOutput::writeString, (valueOut, fc) -> fc.writeTo(valueOut));
         }
     }

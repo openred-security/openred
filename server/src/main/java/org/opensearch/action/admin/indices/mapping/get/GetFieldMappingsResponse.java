@@ -114,7 +114,7 @@ public class GetFieldMappingsResponse extends ActionResponse implements ToXConte
         Map<String, Map<String, FieldMappingMetadata>> indexMapBuilder = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
             String index = in.readString();
-            if (in.getVersion().before(Version.V_2_0_0)) {
+            if (in.getVersion().before(Version.V_0_0_0)) {
                 int typesSize = in.readVInt();
                 if (typesSize != 1) {
                     throw new IllegalStateException("Expected single type but received [" + typesSize + "]");
@@ -266,7 +266,7 @@ public class GetFieldMappingsResponse extends ActionResponse implements ToXConte
         out.writeVInt(mappings.size());
         for (Map.Entry<String, Map<String, FieldMappingMetadata>> indexEntry : mappings.entrySet()) {
             out.writeString(indexEntry.getKey());
-            if (out.getVersion().before(Version.V_2_0_0)) {
+            if (out.getVersion().before(Version.V_0_0_0)) {
                 out.writeVInt(1);
                 out.writeString(MapperService.SINGLE_MAPPING_NAME);
             }

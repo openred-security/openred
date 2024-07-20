@@ -108,7 +108,7 @@ public class CreateIndexRequest extends AcknowledgedRequest<CreateIndexRequest> 
         cause = in.readString();
         index = in.readString();
         settings = readSettingsFromStream(in);
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             int size = in.readVInt();
             if (size == 1) {
                 String type = in.readString();
@@ -581,7 +581,7 @@ public class CreateIndexRequest extends AcknowledgedRequest<CreateIndexRequest> 
         out.writeString(cause);
         out.writeString(index);
         writeSettingsToStream(settings, out);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             if ("{}".equals(mappings)) {
                 out.writeVInt(0);
             } else {

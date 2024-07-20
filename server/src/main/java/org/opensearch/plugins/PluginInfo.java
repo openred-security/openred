@@ -199,14 +199,14 @@ public class PluginInfo implements Writeable, ToXContentObject {
         this.name = in.readString();
         this.description = in.readString();
         this.version = in.readString();
-        if (in.getVersion().onOrAfter(Version.V_2_13_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             this.opensearchVersionRanges = (List<SemverRange>) in.readGenericValue();
         } else {
             this.opensearchVersionRanges = List.of(new SemverRange(in.readVersion(), SemverRange.RangeOperator.DEFAULT));
         }
         this.javaVersion = in.readString();
         this.classname = in.readString();
-        if (in.getVersion().onOrAfter(Version.V_1_1_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             customFolderName = in.readString();
         } else {
             customFolderName = this.name;
@@ -220,7 +220,7 @@ public class PluginInfo implements Writeable, ToXContentObject {
         out.writeString(name);
         out.writeString(description);
         out.writeString(version);
-        if (out.getVersion().onOrAfter(Version.V_2_13_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeGenericValue(opensearchVersionRanges);
         } else {
             /*
@@ -231,7 +231,7 @@ public class PluginInfo implements Writeable, ToXContentObject {
         }
         out.writeString(javaVersion);
         out.writeString(classname);
-        if (out.getVersion().onOrAfter(Version.V_1_1_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             if (customFolderName != null) {
                 out.writeString(customFolderName);
             } else {

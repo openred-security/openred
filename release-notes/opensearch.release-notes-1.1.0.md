@@ -175,7 +175,7 @@
     [Nick Knize](mailto:nknize@gmail.com) - Wed, 25 Aug 2021 23:58:30 -0500
 
 
-    PluginInfo should use .onOrAfter(Version.V_1_1_0) instead of
+    PluginInfo should use .onOrAfter(Version.V_1_0_0) instead of
     .after(Version.V_1_0_0) for the new custom folder name for plugin feature.
      Signed-off-by: Nicholas Walter Knize &lt;nknize@apache.org&gt;
 

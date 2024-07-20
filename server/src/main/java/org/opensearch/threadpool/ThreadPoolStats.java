@@ -91,7 +91,7 @@ public class ThreadPoolStats implements Writeable, ToXContentFragment, Iterable<
             rejected = in.readLong();
             largest = in.readInt();
             completed = in.readLong();
-            waitTimeNanos = in.getVersion().onOrAfter(Version.V_2_11_0) ? in.readLong() : -1;
+            waitTimeNanos = in.getVersion().onOrAfter(Version.V_1_0_0) ? in.readLong() : -1;
         }
 
         @Override
@@ -103,7 +103,7 @@ public class ThreadPoolStats implements Writeable, ToXContentFragment, Iterable<
             out.writeLong(rejected);
             out.writeInt(largest);
             out.writeLong(completed);
-            if (out.getVersion().onOrAfter(Version.V_2_11_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 out.writeLong(waitTimeNanos);
             }
         }

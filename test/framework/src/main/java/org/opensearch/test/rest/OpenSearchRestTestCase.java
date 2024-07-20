@@ -1272,7 +1272,7 @@ public abstract class OpenSearchRestTestCase extends OpenSearchTestCase {
         final List<String> expectedWarnings = Arrays.asList(
             "Synced flush was removed and a normal flush was performed instead. This transition will be removed in a future version."
         );
-        if (nodeVersions.stream().allMatch(version -> version.onOrAfter(Version.V_2_0_0))) {
+        if (nodeVersions.stream().allMatch(version -> version.onOrAfter(Version.V_1_0_0))) {
             options.setWarningsHandler(warnings -> warnings.isEmpty() == false && warnings.equals(expectedWarnings) == false);
         } else if (nodeVersions.stream().anyMatch(version -> version.onOrAfter(LegacyESVersion.V_7_6_0))) {
             options.setWarningsHandler(

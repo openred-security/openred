@@ -937,7 +937,7 @@ public class MetadataCreateIndexService {
          */
         shardLimitValidator.validateShardLimit(request.index(), indexSettings, currentState);
         if (IndexSettings.INDEX_SOFT_DELETES_SETTING.get(indexSettings) == false
-            && IndexMetadata.SETTING_INDEX_VERSION_CREATED.get(indexSettings).onOrAfter(Version.V_2_0_0)) {
+            && IndexMetadata.SETTING_INDEX_VERSION_CREATED.get(indexSettings).onOrAfter(Version.V_1_0_0)) {
             throw new IllegalArgumentException(
                 "Creating indices with soft-deletes disabled is no longer supported. "
                     + "Please do not specify a value for setting [index.soft_deletes.enabled]."

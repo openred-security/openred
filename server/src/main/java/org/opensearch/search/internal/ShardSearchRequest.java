@@ -243,7 +243,7 @@ public class ShardSearchRequest extends TransportRequest implements IndicesReque
         numberOfShards = in.readVInt();
         scroll = in.readOptionalWriteable(Scroll::new);
         source = in.readOptionalWriteable(SearchSourceBuilder::new);
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             // types no longer relevant so ignore
             String[] types = in.readStringArray();
             if (types.length > 0) {
@@ -254,7 +254,7 @@ public class ShardSearchRequest extends TransportRequest implements IndicesReque
         indexBoost = in.readFloat();
         nowInMillis = in.readVLong();
         requestCache = in.readOptionalBoolean();
-        if (in.getVersion().onOrAfter(Version.V_2_0_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             inboundNetworkTime = in.readVLong();
             outboundNetworkTime = in.readVLong();
         }
@@ -322,7 +322,7 @@ public class ShardSearchRequest extends TransportRequest implements IndicesReque
         }
         out.writeOptionalWriteable(scroll);
         out.writeOptionalWriteable(source);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             // types not supported so send an empty array to previous versions
             out.writeStringArray(Strings.EMPTY_ARRAY);
         }
@@ -332,7 +332,7 @@ public class ShardSearchRequest extends TransportRequest implements IndicesReque
             out.writeVLong(nowInMillis);
         }
         out.writeOptionalBoolean(requestCache);
-        if (asKey == false && out.getVersion().onOrAfter(Version.V_2_0_0)) {
+        if (asKey == false && out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeVLong(inboundNetworkTime);
             out.writeVLong(outboundNetworkTime);
         }

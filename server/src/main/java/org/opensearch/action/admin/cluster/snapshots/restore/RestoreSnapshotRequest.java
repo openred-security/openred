@@ -159,10 +159,10 @@ public class RestoreSnapshotRequest extends ClusterManagerNodeRequest<RestoreSna
         if (in.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
             snapshotUuid = in.readOptionalString();
         }
-        if (in.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             storageType = in.readEnum(StorageType.class);
         }
-        if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             sourceRemoteStoreRepository = in.readOptionalString();
         }
     }
@@ -192,10 +192,10 @@ public class RestoreSnapshotRequest extends ClusterManagerNodeRequest<RestoreSna
                 "restricting the snapshot UUID is forbidden in a cluster with version [" + out.getVersion() + "] nodes"
             );
         }
-        if (out.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeEnum(storageType);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalString(sourceRemoteStoreRepository);
         }
     }

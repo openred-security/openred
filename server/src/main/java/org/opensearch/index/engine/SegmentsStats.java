@@ -110,7 +110,7 @@ public class SegmentsStats implements Writeable, ToXContentFragment {
         count = in.readVLong();
         // the following was removed in Lucene 9 (https://issues.apache.org/jira/browse/LUCENE-9387)
         // retain for bwc only (todo: remove in OpenSearch 3)
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             in.readLong(); // estimated segment memory
             in.readLong(); // estimated terms memory
             in.readLong(); // estimated stored fields memory
@@ -124,7 +124,7 @@ public class SegmentsStats implements Writeable, ToXContentFragment {
         bitsetMemoryInBytes = in.readLong();
         maxUnsafeAutoIdTimestamp = in.readLong();
         fileSizes = in.readMap(StreamInput::readString, StreamInput::readLong);
-        if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             remoteSegmentStats = in.readOptionalWriteable(RemoteSegmentStats::new);
             replicationStats = in.readOptionalWriteable(ReplicationStats::new);
         } else {
@@ -312,7 +312,7 @@ public class SegmentsStats implements Writeable, ToXContentFragment {
     @Override
     public void writeTo(StreamOutput out) throws IOException {
         out.writeVLong(count);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             // the following was removed in Lucene 9 (https://issues.apache.org/jira/browse/LUCENE-9387)
             // retain the following for bwc only (todo: remove in OpenSearch 3)
             out.writeLong(0L); // estimated memory
@@ -328,7 +328,7 @@ public class SegmentsStats implements Writeable, ToXContentFragment {
         out.writeLong(bitsetMemoryInBytes);
         out.writeLong(maxUnsafeAutoIdTimestamp);
         out.writeMap(this.fileSizes, StreamOutput::writeString, StreamOutput::writeLong);
-        if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(remoteSegmentStats);
             out.writeOptionalWriteable(replicationStats);
         }

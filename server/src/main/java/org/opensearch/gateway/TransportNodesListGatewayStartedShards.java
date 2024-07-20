@@ -318,7 +318,7 @@ public class TransportNodesListGatewayStartedShards extends TransportNodesAction
                 storeException = null;
             }
             ReplicationCheckpoint replicationCheckpoint;
-            if (in.getVersion().onOrAfter(Version.V_2_3_0) && in.readBoolean()) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0) && in.readBoolean()) {
                 replicationCheckpoint = new ReplicationCheckpoint(in);
             } else {
                 replicationCheckpoint = null;
@@ -346,7 +346,7 @@ public class TransportNodesListGatewayStartedShards extends TransportNodesAction
             } else {
                 out.writeBoolean(false);
             }
-            if (out.getVersion().onOrAfter(Version.V_2_3_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 if (gatewayStartedShard.replicationCheckpoint() != null) {
                     out.writeBoolean(true);
                     gatewayStartedShard.replicationCheckpoint().writeTo(out);

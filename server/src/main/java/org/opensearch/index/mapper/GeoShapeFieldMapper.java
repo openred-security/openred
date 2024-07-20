@@ -215,7 +215,7 @@ public class GeoShapeFieldMapper extends AbstractShapeGeometryFieldMapper<Geomet
          * with GeoShape fields. Github issue: https://github.com/opensearch-project/OpenSearch/issues/10958,
          * https://github.com/opensearch-project/OpenSearch/issues/10795
          */
-        if (context.indexSettings().getIndexVersionCreated().onOrAfter(Version.V_2_9_0)) {
+        if (context.indexSettings().getIndexVersionCreated().onOrAfter(Version.V_1_0_0)) {
             Field[] fieldsArray = new Field[indexableFields.size()];
             fieldsArray = indexableFields.toArray(fieldsArray);
             context.doc().add(LatLonShape.createDocValueField(name, fieldsArray));
@@ -224,7 +224,7 @@ public class GeoShapeFieldMapper extends AbstractShapeGeometryFieldMapper<Geomet
                 "The index was created with Version : {}, for geoshape doc values to work index must be "
                     + "created with OpenSearch Version : {} or above",
                 context.indexSettings().getIndexVersionCreated(),
-                Version.V_2_9_0
+                Version.V_1_0_0
             );
         }
     }

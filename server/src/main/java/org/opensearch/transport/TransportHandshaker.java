@@ -88,7 +88,7 @@ final class TransportHandshaker {
             // we also have no payload on the request but the response will contain the actual version of the node we talk
             // to as the payload.
             Version minCompatVersion = version.minimumCompatibilityVersion();
-            if (version.onOrAfter(Version.V_1_0_0) && version.before(Version.V_2_0_0)) {
+            if (version.onOrAfter(Version.V_1_0_0) && version.before(Version.V_0_0_0)) {
                 // the minCompatibleVersion for OpenSearch 1.x is sent as 6.7.99 instead of 6.8.0
                 // as this helps in (indirectly) identifying the remote node version during handle HandshakeRequest itself
                 // and then send appropriate version (7.10.2/ OpenSearch 1.x version) in response.
@@ -98,7 +98,7 @@ final class TransportHandshaker {
                 // Sending only BC version to ElasticSearch node provide easy deprecation path for this BC version logic
                 // in OpenSearch 2.0.0.
                 minCompatVersion = Version.fromId(6079999);
-            } else if (version.onOrAfter(Version.V_2_0_0)) {
+            } else if (version.onOrAfter(Version.V_1_0_0)) {
                 minCompatVersion = Version.fromId(7099999);
             }
             handshakeRequestSender.sendRequest(node, channel, requestId, minCompatVersion);

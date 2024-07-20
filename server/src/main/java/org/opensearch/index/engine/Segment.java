@@ -89,7 +89,7 @@ public class Segment implements Writeable {
         mergeId = in.readOptionalString();
         // the following was removed in Lucene 9 (https://issues.apache.org/jira/browse/LUCENE-9387)
         // retain for bwc only (todo: remove in OpenSearch 3)
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             in.readLong();  // estimated memory
         }
         if (in.readBoolean()) {
@@ -207,7 +207,7 @@ public class Segment implements Writeable {
         out.writeOptionalString(mergeId);
         // the following was removed in Lucene 9 (https://issues.apache.org/jira/browse/LUCENE-9387)
         // retain for bwc only (todo: remove in OpenSearch 3)
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             out.writeLong(0L);
         }
         out.writeBoolean(false);

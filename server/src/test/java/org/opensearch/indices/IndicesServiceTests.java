@@ -568,7 +568,7 @@ public class IndicesServiceTests extends OpenSearchSingleNodeTestCase {
         final Version randVersion = VersionUtils.randomIndexCompatibleVersion(random());
         assertFalse(indicesService.isMetadataField(randVersion, randomAlphaOfLengthBetween(10, 15)));
         for (String builtIn : IndicesModule.getBuiltInMetadataFields()) {
-            if (NestedPathFieldMapper.NAME.equals(builtIn) && randVersion.before(Version.V_2_0_0)) {
+            if (NestedPathFieldMapper.NAME.equals(builtIn) && randVersion.before(Version.V_0_0_0)) {
                 continue;   // nested field mapper does not exist prior to 2.0
             }
             assertTrue(

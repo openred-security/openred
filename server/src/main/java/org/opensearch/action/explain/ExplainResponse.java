@@ -96,7 +96,7 @@ public class ExplainResponse extends ActionResponse implements StatusToXContentO
     public ExplainResponse(StreamInput in) throws IOException {
         super(in);
         index = in.readString();
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             in.readString();
         }
         id = in.readString();
@@ -145,7 +145,7 @@ public class ExplainResponse extends ActionResponse implements StatusToXContentO
     @Override
     public void writeTo(StreamOutput out) throws IOException {
         out.writeString(index);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             out.writeString(MapperService.SINGLE_MAPPING_NAME);
         }
         out.writeString(id);

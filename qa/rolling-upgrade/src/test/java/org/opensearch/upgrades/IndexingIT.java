@@ -269,7 +269,7 @@ public class IndexingIT extends AbstractRollingTestCase {
      */
     @AwaitsFix(bugUrl = "https://github.com/opensearch-project/OpenSearch/issues/7679")
     public void testIndexingWithSegRep() throws Exception {
-        if (UPGRADE_FROM_VERSION.before(Version.V_2_4_0)) {
+        if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
             logger.info("--> Skip test for version {} where segment replication feature is not available", UPGRADE_FROM_VERSION);
             return;
         }
@@ -351,7 +351,7 @@ public class IndexingIT extends AbstractRollingTestCase {
     }
 
     public void testIndexingWithFuzzyFilterPostings() throws Exception {
-        if (UPGRADE_FROM_VERSION.onOrBefore(Version.V_2_11_1)) {
+        if (UPGRADE_FROM_VERSION.onOrbefore(Version.V_0_0_0)) {
             logger.info("--> Skip test for version {} where fuzzy filter postings format feature is not available", UPGRADE_FROM_VERSION);
             return;
         }

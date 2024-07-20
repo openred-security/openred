@@ -154,7 +154,7 @@ public abstract class DocWriteResponse extends ReplicationResponse implements Wr
     protected DocWriteResponse(ShardId shardId, StreamInput in) throws IOException {
         super(in);
         this.shardId = shardId;
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             String type = in.readString();
             assert MapperService.SINGLE_MAPPING_NAME.equals(type) : "Expected [_doc] but received [" + type + "]";
         }
@@ -173,7 +173,7 @@ public abstract class DocWriteResponse extends ReplicationResponse implements Wr
     protected DocWriteResponse(StreamInput in) throws IOException {
         super(in);
         shardId = new ShardId(in);
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             String type = in.readString();
             assert MapperService.SINGLE_MAPPING_NAME.equals(type) : "Expected [_doc] but received [" + type + "]";
         }
@@ -310,7 +310,7 @@ public abstract class DocWriteResponse extends ReplicationResponse implements Wr
     }
 
     private void writeWithoutShardId(StreamOutput out) throws IOException {
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             out.writeString(MapperService.SINGLE_MAPPING_NAME);
         }
         out.writeString(id);

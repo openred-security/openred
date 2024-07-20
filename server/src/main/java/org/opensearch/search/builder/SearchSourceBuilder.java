@@ -283,12 +283,12 @@ public final class SearchSourceBuilder implements Writeable, ToXContentObject, R
         if (in.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
             pointInTimeBuilder = in.readOptionalWriteable(PointInTimeBuilder::new);
         }
-        if (in.getVersion().onOrAfter(Version.V_2_8_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             if (in.readBoolean()) {
                 searchPipelineSource = in.readMap();
             }
         }
-        if (in.getVersion().onOrAfter(Version.V_2_13_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             includeNamedQueriesScore = in.readOptionalBoolean();
         }
     }
@@ -358,13 +358,13 @@ public final class SearchSourceBuilder implements Writeable, ToXContentObject, R
         if (out.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
             out.writeOptionalWriteable(pointInTimeBuilder);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_8_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeBoolean(searchPipelineSource != null);
             if (searchPipelineSource != null) {
                 out.writeMap(searchPipelineSource);
             }
         }
-        if (out.getVersion().onOrAfter(Version.V_2_13_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalBoolean(includeNamedQueriesScore);
         }
     }

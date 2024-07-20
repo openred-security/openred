@@ -117,7 +117,7 @@ public class ClusterInfo implements ToXContentFragment, Writeable {
         this.shardSizes = Collections.unmodifiableMap(sizeMap);
         this.routingToDataPath = Collections.unmodifiableMap(routingMap);
         this.reservedSpace = Collections.unmodifiableMap(reservedSpaceMap);
-        if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             this.nodeFileCacheStats = in.readMap(StreamInput::readString, FileCacheStats::new);
         } else {
             this.nodeFileCacheStats = Map.of();
@@ -133,7 +133,7 @@ public class ClusterInfo implements ToXContentFragment, Writeable {
         if (out.getVersion().onOrAfter(StoreStats.RESERVED_BYTES_VERSION)) {
             out.writeMap(this.reservedSpace, (o, v) -> v.writeTo(o), (o, v) -> v.writeTo(o));
         }
-        if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeMap(this.nodeFileCacheStats, StreamOutput::writeString, (o, v) -> v.writeTo(o));
         }
     }

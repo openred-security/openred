@@ -32,14 +32,14 @@ public class NetworkTime implements Writeable {
     }
 
     public NetworkTime(StreamInput in) throws IOException {
-        if (in.getVersion().onOrAfter(Version.V_2_0_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             this.inboundNetworkTime = in.readVLong();
             this.outboundNetworkTime = in.readVLong();
         }
     }
 
     public void writeTo(StreamOutput out) throws IOException {
-        if (out.getVersion().onOrAfter(Version.V_2_0_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeVLong(inboundNetworkTime);
             out.writeVLong(outboundNetworkTime);
         }

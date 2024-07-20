@@ -403,7 +403,7 @@ public class RestoreService implements ClusterStateApplier {
                                         "Shallow copy snapshot cannot be restored as searchable snapshot."
                                     );
                                 }
-                                if (isRemoteStoreShallowCopy && !currentState.getNodes().getMinNodeVersion().onOrAfter(Version.V_2_9_0)) {
+                                if (isRemoteStoreShallowCopy && !currentState.getNodes().getMinNodeVersion().onOrAfter(Version.V_1_0_0)) {
                                     throw new SnapshotRestoreException(
                                         snapshot,
                                         "cannot restore shallow copy snapshot for index ["
@@ -1269,7 +1269,7 @@ public class RestoreService implements ClusterStateApplier {
     }
 
     private static boolean isSearchableSnapshotsExtendedCompatibilityEnabled() {
-        return org.opensearch.Version.CURRENT.after(org.opensearch.Version.V_2_4_0)
+        return org.opensearch.Version.CURRENT.after(org.opensearch.Version.V_0_0_0)
             && FeatureFlags.isEnabled(SEARCHABLE_SNAPSHOT_EXTENDED_COMPATIBILITY);
     }
 }

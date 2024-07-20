@@ -339,7 +339,7 @@ public class DiscoveryNode implements Writeable, ToXContentFragment {
                 }
                 final DiscoveryNodeRole role = roleMap.get(roleName);
                 if (role == null) {
-                    if (in.getVersion().onOrAfter(Version.V_2_1_0)) {
+                    if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                         roles.add(new DiscoveryNodeRole.DynamicRole(roleName, roleNameAbbreviation, canContainData));
                     } else {
                         roles.add(new DiscoveryNodeRole.UnknownRole(roleName, roleNameAbbreviation, canContainData));

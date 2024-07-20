@@ -190,60 +190,60 @@ public class NodeStats extends BaseNodeResponse implements ToXContentFragment {
         } else {
             indexingPressureStats = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_1_2_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             shardIndexingPressureStats = in.readOptionalWriteable(ShardIndexingPressureStats::new);
         } else {
             shardIndexingPressureStats = null;
         }
 
-        if (in.getVersion().onOrAfter(Version.V_2_4_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             searchBackpressureStats = in.readOptionalWriteable(SearchBackpressureStats::new);
         } else {
             searchBackpressureStats = null;
         }
 
-        if (in.getVersion().onOrAfter(Version.V_2_6_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             clusterManagerThrottlingStats = in.readOptionalWriteable(ClusterManagerThrottlingStats::new);
         } else {
             clusterManagerThrottlingStats = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_6_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             weightedRoutingStats = in.readOptionalWriteable(WeightedRoutingStats::new);
         } else {
             weightedRoutingStats = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             fileCacheStats = in.readOptionalWriteable(FileCacheStats::new);
         } else {
             fileCacheStats = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_9_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             taskCancellationStats = in.readOptionalWriteable(TaskCancellationStats::new);
         } else {
             taskCancellationStats = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_9_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             searchPipelineStats = in.readOptionalWriteable(SearchPipelineStats::new);
         } else {
             searchPipelineStats = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_12_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             resourceUsageStats = in.readOptionalWriteable(NodesResourceUsageStats::new);
         } else {
             resourceUsageStats = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_12_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             segmentReplicationRejectionStats = in.readOptionalWriteable(SegmentReplicationRejectionStats::new);
         } else {
             segmentReplicationRejectionStats = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_12_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             repositoriesStats = in.readOptionalWriteable(RepositoriesStats::new);
         } else {
             repositoriesStats = null;
         }
-        // TODO: change to V_2_12_0 on main after backport to 2.x
-        if (in.getVersion().onOrAfter(Version.V_2_12_0)) {
+        // TODO: change to V_0_12_0 on main after backport to 2.x
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             admissionControlStats = in.readOptionalWriteable(AdmissionControlStats::new);
         } else {
             admissionControlStats = null;
@@ -493,38 +493,38 @@ public class NodeStats extends BaseNodeResponse implements ToXContentFragment {
         if (out.getVersion().onOrAfter(LegacyESVersion.V_7_9_0)) {
             out.writeOptionalWriteable(indexingPressureStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_1_2_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(shardIndexingPressureStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_4_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(searchBackpressureStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_6_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(clusterManagerThrottlingStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_6_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(weightedRoutingStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(fileCacheStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_9_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(taskCancellationStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_9_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(searchPipelineStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_12_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(resourceUsageStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_12_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(segmentReplicationRejectionStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_12_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(repositoriesStats);
         }
 
-        if (out.getVersion().onOrAfter(Version.V_2_12_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(admissionControlStats);
         }
     }

@@ -126,7 +126,7 @@ public class TermVectorsResponse extends ActionResponse implements ToXContentObj
 
     TermVectorsResponse(StreamInput in) throws IOException {
         index = in.readString();
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             // ignore deprecated/removed type
             in.readString();
         }
@@ -144,7 +144,7 @@ public class TermVectorsResponse extends ActionResponse implements ToXContentObj
     @Override
     public void writeTo(StreamOutput out) throws IOException {
         out.writeString(index);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             // send empty array to previous version since types are no longer supported
             out.writeString(MapperService.SINGLE_MAPPING_NAME);
         }

@@ -251,7 +251,7 @@ public interface DocValueFormat extends NamedWriteable {
         public DateTime(StreamInput in) throws IOException {
             String datePattern = in.readString();
             String printPattern = null;
-            if (in.getVersion().onOrAfter(Version.V_2_12_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 printPattern = in.readOptionalString();
             }
             String zoneId = in.readString();
@@ -290,12 +290,12 @@ public interface DocValueFormat extends NamedWriteable {
 
         @Override
         public void writeTo(StreamOutput out) throws IOException {
-            if (out.getVersion().before(Version.V_2_12_0) && formatter.equals(DateFieldMapper.DEFAULT_DATE_TIME_FORMATTER)) {
+            if (out.getVersion().before(Version.V_0_0_0) && formatter.equals(DateFieldMapper.DEFAULT_DATE_TIME_FORMATTER)) {
                 out.writeString(DateFieldMapper.LEGACY_DEFAULT_DATE_TIME_FORMATTER.pattern()); // required for backwards compatibility
             } else {
                 out.writeString(formatter.pattern());
             }
-            if (out.getVersion().onOrAfter(Version.V_2_12_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 out.writeOptionalString(formatter.printPattern());
             }
             if (out.getVersion().before(LegacyESVersion.V_7_0_0)) {

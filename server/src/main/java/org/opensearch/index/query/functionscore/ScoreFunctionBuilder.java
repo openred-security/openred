@@ -65,7 +65,7 @@ public abstract class ScoreFunctionBuilder<FB extends ScoreFunctionBuilder<FB>> 
      */
     public ScoreFunctionBuilder(StreamInput in) throws IOException {
         weight = checkWeight(in.readOptionalFloat());
-        if (in.getVersion().onOrAfter(Version.V_1_3_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             functionName = in.readOptionalString();
         }
     }
@@ -73,7 +73,7 @@ public abstract class ScoreFunctionBuilder<FB extends ScoreFunctionBuilder<FB>> 
     @Override
     public final void writeTo(StreamOutput out) throws IOException {
         out.writeOptionalFloat(weight);
-        if (out.getVersion().onOrAfter(Version.V_1_3_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalString(functionName);
         }
         doWriteTo(out);

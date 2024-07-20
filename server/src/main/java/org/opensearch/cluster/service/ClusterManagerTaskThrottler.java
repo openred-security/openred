@@ -165,8 +165,8 @@ public class ClusterManagerTaskThrottler implements TaskBatcherListener {
     void validateSetting(final Settings settings) {
         Map<String, Settings> groups = settings.getAsGroups();
         if (groups.size() > 0) {
-            if (minNodeVersionSupplier.get().compareTo(Version.V_2_5_0) < 0) {
-                throw new IllegalArgumentException("All the nodes in cluster should be on version later than or equal to 2.5.0");
+            if (minNodeVersionSupplier.get().compareTo(Version.V_1_0_0) < 0) {
+                throw new IllegalArgumentException("All the nodes in cluster should be on version later than or equal to 1.0.0");
             }
         }
         for (String key : groups.keySet()) {
@@ -246,11 +246,11 @@ public class ClusterManagerTaskThrottler implements TaskBatcherListener {
      */
     private boolean shouldThrottle(Long threshold, Long count, int size) {
         if (!startThrottling.get()) {
-            if (minNodeVersionSupplier.get().compareTo(Version.V_2_5_0) >= 0) {
+            if (minNodeVersionSupplier.get().compareTo(Version.V_1_0_0) >= 0) {
                 startThrottling.compareAndSet(false, true);
-                logger.info("Starting cluster manager throttling as all nodes are higher than or equal to 2.5.0");
+                logger.info("Starting cluster manager throttling as all nodes are higher than or equal to 1.0.0");
             } else {
-                logger.info("Skipping cluster manager throttling as at least one node < 2.5.0 is present in cluster");
+                logger.info("Skipping cluster manager throttling as at least one node < 1.0.0 is present in cluster");
                 return false;
             }
         }

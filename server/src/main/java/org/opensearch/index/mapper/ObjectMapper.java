@@ -457,7 +457,7 @@ public class ObjectMapper extends Mapper implements Cloneable {
             this.mappers = CopyOnWriteHashMap.copyOf(mappers);
         }
         Version version = IndexMetadata.indexCreated(settings);
-        if (version.before(Version.V_2_0_0)) {
+        if (version.before(Version.V_0_0_0)) {
             this.nestedTypePath = "__" + fullPath;
         } else {
             this.nestedTypePath = fullPath;

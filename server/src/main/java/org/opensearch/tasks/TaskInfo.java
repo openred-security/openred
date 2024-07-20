@@ -174,7 +174,7 @@ public final class TaskInfo implements Writeable, ToXContentFragment {
         startTime = in.readLong();
         runningTimeNanos = in.readLong();
         cancellable = in.readBoolean();
-        if (in.getVersion().onOrAfter(Version.V_2_0_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             cancelled = in.readBoolean();
         } else {
             cancelled = false;
@@ -184,12 +184,12 @@ public final class TaskInfo implements Writeable, ToXContentFragment {
         }
         parentTaskId = TaskId.readFromStream(in);
         headers = in.readMap(StreamInput::readString, StreamInput::readString);
-        if (in.getVersion().onOrAfter(Version.V_2_1_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             resourceStats = in.readOptionalWriteable(TaskResourceStats::new);
         } else {
             resourceStats = null;
         }
-        if (in.getVersion().onOrAfter(Version.V_2_8_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             cancellationStartTime = in.readOptionalLong();
         } else {
             cancellationStartTime = null;
@@ -206,15 +206,15 @@ public final class TaskInfo implements Writeable, ToXContentFragment {
         out.writeLong(startTime);
         out.writeLong(runningTimeNanos);
         out.writeBoolean(cancellable);
-        if (out.getVersion().onOrAfter(Version.V_2_0_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeBoolean(cancelled);
         }
         parentTaskId.writeTo(out);
         out.writeMap(headers, StreamOutput::writeString, StreamOutput::writeString);
-        if (out.getVersion().onOrAfter(Version.V_2_1_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(resourceStats);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_8_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalLong(cancellationStartTime);
         }
     }
