@@ -37,16 +37,14 @@ apply plugin: 'opensearch.testclusters'
 apply plugin: 'opensearch.standalone-test'
 apply from : "$rootDir/gradle/bwc-test.gradle"
 
+
 for (Version bwcVersion : BuildParams.bwcVersions.indexCompatible) {
-  if (bwcVersion.before('6.3.0')) {
-    continue;
-  }
   String baseName = "v${bwcVersion}"
 
   testClusters {
     "${baseName}" {
       versions = [bwcVersion.toString(), project.version]
-      numberOfNodes = 2
+      numberOfNodes = 4
       // some tests rely on the translog not being flushed
       setting 'indices.memory.shard_inactive_time', '60m'
       setting 'http.content_type.required', 'true'

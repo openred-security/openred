@@ -230,13 +230,13 @@ public class MoreLikeThisQueryBuilder extends AbstractQueryBuilder<MoreLikeThisQ
          */
         Item(StreamInput in) throws IOException {
             index = in.readOptionalString();
-            if (in.getVersion().before(Version.V_2_0_0)) {
+            if (in.getVersion().before(Version.V_0_0_0)) {
                 // types no longer supported so ignore
                 in.readOptionalString();
             }
             if (in.readBoolean()) {
                 doc = (BytesReference) in.readGenericValue();
-                if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+                if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                     mediaType = in.readMediaType();
                 } else {
                     mediaType = in.readEnum(XContentType.class);
@@ -254,14 +254,14 @@ public class MoreLikeThisQueryBuilder extends AbstractQueryBuilder<MoreLikeThisQ
         @Override
         public void writeTo(StreamOutput out) throws IOException {
             out.writeOptionalString(index);
-            if (out.getVersion().before(Version.V_2_0_0)) {
+            if (out.getVersion().before(Version.V_0_0_0)) {
                 // types not supported so send an empty array to previous versions
                 out.writeOptionalString(null);
             }
             out.writeBoolean(doc != null);
             if (doc != null) {
                 out.writeGenericValue(doc);
-                if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+                if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                     mediaType.writeTo(out);
                 } else {
                     out.writeEnum((XContentType) mediaType);

@@ -194,7 +194,7 @@ public class ClusterHealthResponsesTests extends AbstractSerializingTestCase<Clu
         clusterHealth.writeTo(out_gt_1_0);
 
         int bytesStreamOutputCount = 1;
-        if (out_gt_1_0.getVersion().onOrAfter(Version.V_2_5_0)) {
+        if (out_gt_1_0.getVersion().onOrAfter(Version.V_1_0_0)) {
             bytesStreamOutputCount = 2;
         }
 

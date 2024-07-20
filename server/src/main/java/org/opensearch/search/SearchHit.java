@@ -171,7 +171,7 @@ public final class SearchHit implements Writeable, ToXContentObject, Iterable<Do
         docId = -1;
         score = in.readFloat();
         id = in.readOptionalText();
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             in.readOptionalText();
         }
         nestedIdentity = in.readOptionalWriteable(NestedIdentity::new);
@@ -218,7 +218,7 @@ public final class SearchHit implements Writeable, ToXContentObject, Iterable<Do
         sortValues = new SearchSortValues(in);
 
         size = in.readVInt();
-        if (in.getVersion().onOrAfter(Version.V_2_13_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             if (size > 0) {
                 Map<String, Float> tempMap = in.readMap(StreamInput::readString, StreamInput::readFloat);
                 matchedQueries = tempMap.entrySet()
@@ -285,7 +285,7 @@ public final class SearchHit implements Writeable, ToXContentObject, Iterable<Do
     public void writeTo(StreamOutput out) throws IOException {
         out.writeFloat(score);
         out.writeOptionalText(id);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             out.writeOptionalText(SINGLE_MAPPING_TYPE);
         }
         out.writeOptionalWriteable(nestedIdentity);
@@ -316,7 +316,7 @@ public final class SearchHit implements Writeable, ToXContentObject, Iterable<Do
         sortValues.writeTo(out);
 
         out.writeVInt(matchedQueries.size());
-        if (out.getVersion().onOrAfter(Version.V_2_13_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             if (!matchedQueries.isEmpty()) {
                 out.writeMap(matchedQueries, StreamOutput::writeString, StreamOutput::writeFloat);
             }

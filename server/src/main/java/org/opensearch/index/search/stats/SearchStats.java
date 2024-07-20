@@ -239,17 +239,17 @@ public class SearchStats implements Writeable, ToXContentFragment {
             suggestTimeInMillis = in.readVLong();
             suggestCurrent = in.readVLong();
 
-            if (in.getVersion().onOrAfter(Version.V_2_4_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 pitCount = in.readVLong();
                 pitTimeInMillis = in.readVLong();
                 pitCurrent = in.readVLong();
             }
 
-            if (in.getVersion().onOrAfter(Version.V_2_11_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 this.requestStatsLongHolder = new RequestStatsLongHolder();
                 requestStatsLongHolder.requestStatsHolder = in.readMap(StreamInput::readString, PhaseStatsLongHolder::new);
             }
-            if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 concurrentQueryCount = in.readVLong();
                 concurrentQueryTimeInMillis = in.readVLong();
                 concurrentQueryCurrent = in.readVLong();
@@ -434,13 +434,13 @@ public class SearchStats implements Writeable, ToXContentFragment {
             out.writeVLong(suggestTimeInMillis);
             out.writeVLong(suggestCurrent);
 
-            if (out.getVersion().onOrAfter(Version.V_2_4_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 out.writeVLong(pitCount);
                 out.writeVLong(pitTimeInMillis);
                 out.writeVLong(pitCurrent);
             }
 
-            if (out.getVersion().onOrAfter(Version.V_2_11_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 if (requestStatsLongHolder == null) {
                     requestStatsLongHolder = new RequestStatsLongHolder();
                 }
@@ -451,7 +451,7 @@ public class SearchStats implements Writeable, ToXContentFragment {
                 );
             }
 
-            if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 out.writeVLong(concurrentQueryCount);
                 out.writeVLong(concurrentQueryTimeInMillis);
                 out.writeVLong(concurrentQueryCurrent);

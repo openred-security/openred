@@ -107,7 +107,7 @@ public class GetIndexResponse extends ActionResponse implements ToXContentObject
         Map<String, MappingMetadata> mappingsMapBuilder = new HashMap<>();
         for (int i = 0; i < mappingsSize; i++) {
             String index = in.readString();
-            if (in.getVersion().before(Version.V_2_0_0)) {
+            if (in.getVersion().before(Version.V_0_0_0)) {
                 int numMappings = in.readVInt();
                 if (numMappings == 0) {
                     mappingsMapBuilder.put(index, MappingMetadata.EMPTY_MAPPINGS);
@@ -247,7 +247,7 @@ public class GetIndexResponse extends ActionResponse implements ToXContentObject
         out.writeVInt(mappings.size());
         for (final Map.Entry<String, MappingMetadata> indexEntry : mappings.entrySet()) {
             out.writeString(indexEntry.getKey());
-            if (out.getVersion().before(Version.V_2_0_0)) {
+            if (out.getVersion().before(Version.V_0_0_0)) {
                 out.writeVInt(indexEntry.getValue() == MappingMetadata.EMPTY_MAPPINGS ? 0 : 1);
                 if (indexEntry.getValue() != MappingMetadata.EMPTY_MAPPINGS) {
                     out.writeString(MapperService.SINGLE_MAPPING_NAME);

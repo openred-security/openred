@@ -57,12 +57,12 @@ public class GetFieldMappingsIndexRequest extends SingleShardRequest<GetFieldMap
 
     GetFieldMappingsIndexRequest(StreamInput in) throws IOException {
         super(in);
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             in.readStringArray();   // removed types array
         }
         fields = in.readStringArray();
         includeDefaults = in.readBoolean();
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             in.readBoolean();       // removed probablySingleField boolean
         }
         originalIndices = OriginalIndices.readOriginalIndices(in);
@@ -102,12 +102,12 @@ public class GetFieldMappingsIndexRequest extends SingleShardRequest<GetFieldMap
     @Override
     public void writeTo(StreamOutput out) throws IOException {
         super.writeTo(out);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             out.writeStringArray(Strings.EMPTY_ARRAY);
         }
         out.writeStringArray(fields);
         out.writeBoolean(includeDefaults);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             out.writeBoolean(false);
         }
         OriginalIndices.writeOriginalIndices(originalIndices, out);

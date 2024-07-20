@@ -141,9 +141,7 @@ public class DistroTestPlugin implements Plugin<Project> {
             if ((distribution.getType() == OpenSearchDistribution.Type.DEB || distribution.getType() == OpenSearchDistribution.Type.RPM)
                 && distribution.getBundledJdk() != JavaPackageType.NONE) {
                 for (Version version : BuildParams.getBwcVersions().getIndexCompatible()) {
-                    if (version.before("6.3.0")) {
-                        continue; // before opening xpack
-                    }
+                    // openred: Adjusting major compatibility. No need for BWC for OS or ES.
                     final OpenSearchDistribution bwcDistro;
                     if (version.equals(Version.fromString(distribution.getVersion()))) {
                         // this is the same as the distribution we are testing

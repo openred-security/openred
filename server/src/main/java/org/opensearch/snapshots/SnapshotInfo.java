@@ -434,7 +434,7 @@ public final class SnapshotInfo implements Comparable<SnapshotInfo>, ToXContent,
         } else {
             dataStreams = Collections.emptyList();
         }
-        if (in.getVersion().onOrAfter(Version.V_2_9_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             remoteStoreIndexShallowCopy = in.readOptionalBoolean();
         }
     }
@@ -889,7 +889,7 @@ public final class SnapshotInfo implements Comparable<SnapshotInfo>, ToXContent,
                 out.writeStringCollection(dataStreams);
             }
         }
-        if (out.getVersion().onOrAfter(Version.V_2_9_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalBoolean(remoteStoreIndexShallowCopy);
         }
     }

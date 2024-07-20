@@ -602,11 +602,11 @@ public final class RepositoryData {
         }
         builder.endObject();
         if (shouldWriteIndexGens) {
-            if (repoMetaVersion.before(Version.V_2_4_0)) {
+            if (repoMetaVersion.before(Version.V_0_0_0)) {
                 builder.field(MIN_VERSION, SnapshotsService.INDEX_GEN_IN_REPO_DATA_VERSION.toString());
             }
             builder.field(INDEX_METADATA_IDENTIFIERS, indexMetaDataGenerations.identifiers);
-        } else if (shouldWriteShardGens && repoMetaVersion.before(Version.V_2_4_0)) {
+        } else if (shouldWriteShardGens && repoMetaVersion.before(Version.V_0_0_0)) {
             // Add min version field to make it impossible for older OpenSearch versions to deserialize this object
             builder.field(MIN_VERSION, SnapshotsService.SHARD_GEN_IN_REPO_DATA_VERSION.toString());
         }

@@ -54,7 +54,7 @@ public class NestedPathFieldMapper extends MetadataFieldMapper {
 
     /** returns the field name */
     public static String name(Version version) {
-        if (version.before(Version.V_2_0_0)) {
+        if (version.before(Version.V_0_0_0)) {
             return LEGACY_NAME;
         }
         return NAME;
@@ -69,7 +69,7 @@ public class NestedPathFieldMapper extends MetadataFieldMapper {
     private static final NestedPathFieldMapper INSTANCE = new NestedPathFieldMapper(NAME);
 
     public static final TypeParser PARSER = new FixedTypeParser(
-        c -> c.indexVersionCreated().before(Version.V_2_0_0) ? LEGACY_INSTANCE : INSTANCE
+        c -> c.indexVersionCreated().before(Version.V_0_0_0) ? LEGACY_INSTANCE : INSTANCE
     );
 
     /** helper method to create a lucene field based on the opensearch version */

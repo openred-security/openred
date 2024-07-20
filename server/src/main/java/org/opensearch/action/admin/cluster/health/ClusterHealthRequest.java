@@ -102,11 +102,11 @@ public class ClusterHealthRequest extends ClusterManagerNodeReadRequest<ClusterH
         } else {
             indicesOptions = IndicesOptions.lenientExpandOpen();
         }
-        if (in.getVersion().onOrAfter(Version.V_2_5_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             awarenessAttribute = in.readOptionalString();
             level = in.readEnum(Level.class);
         }
-        if (in.getVersion().onOrAfter(Version.V_2_6_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             ensureNodeWeighedIn = in.readBoolean();
         }
     }
@@ -139,11 +139,11 @@ public class ClusterHealthRequest extends ClusterManagerNodeReadRequest<ClusterH
         if (out.getVersion().onOrAfter(LegacyESVersion.V_7_2_0)) {
             indicesOptions.writeIndicesOptions(out);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_5_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalString(awarenessAttribute);
             out.writeEnum(level);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_6_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeBoolean(ensureNodeWeighedIn);
         }
     }

@@ -230,14 +230,14 @@ public class PercolateQueryBuilder extends AbstractQueryBuilder<PercolateQueryBu
         super(in);
         field = in.readString();
         name = in.readOptionalString();
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             String documentType = in.readOptionalString();
             if (documentType != null) {
                 throw new IllegalStateException("documentType must be null");
             }
         }
         indexedDocumentIndex = in.readOptionalString();
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             String indexedDocumentType = in.readOptionalString();
             if (indexedDocumentType != null) {
                 throw new IllegalStateException("indexedDocumentType must be null");
@@ -254,7 +254,7 @@ public class PercolateQueryBuilder extends AbstractQueryBuilder<PercolateQueryBu
         }
         documents = in.readList(StreamInput::readBytesReference);
         if (documents.isEmpty() == false) {
-            if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 documentXContentType = in.readMediaType();
             } else {
                 documentXContentType = in.readEnum(XContentType.class);
@@ -281,12 +281,12 @@ public class PercolateQueryBuilder extends AbstractQueryBuilder<PercolateQueryBu
         }
         out.writeString(field);
         out.writeOptionalString(name);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             // In 7x, typeless percolate queries are represented by null documentType values
             out.writeOptionalString(null);
         }
         out.writeOptionalString(indexedDocumentIndex);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             // In 7x, typeless percolate queries are represented by null indexedDocumentType values
             out.writeOptionalString(null);
         }
@@ -304,7 +304,7 @@ public class PercolateQueryBuilder extends AbstractQueryBuilder<PercolateQueryBu
             out.writeBytesReference(document);
         }
         if (documents.isEmpty() == false) {
-            if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 documentXContentType.writeTo(out);
             } else {
                 out.writeEnum((XContentType) documentXContentType);

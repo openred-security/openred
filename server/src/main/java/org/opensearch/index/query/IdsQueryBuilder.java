@@ -83,7 +83,7 @@ public class IdsQueryBuilder extends AbstractQueryBuilder<IdsQueryBuilder> {
      */
     public IdsQueryBuilder(StreamInput in) throws IOException {
         super(in);
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             // types no longer relevant so ignore
             String[] types = in.readStringArray();
             if (types.length > 0) {
@@ -95,7 +95,7 @@ public class IdsQueryBuilder extends AbstractQueryBuilder<IdsQueryBuilder> {
 
     @Override
     protected void doWriteTo(StreamOutput out) throws IOException {
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             // types not supported so send an empty array to previous versions
             out.writeStringArray(Strings.EMPTY_ARRAY);
         }

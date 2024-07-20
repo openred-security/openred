@@ -740,7 +740,7 @@ public class ReplicationTracker extends AbstractIndexShardComponent implements L
             this.globalCheckpoint = in.readZLong();
             this.inSync = in.readBoolean();
             this.tracked = in.readBoolean();
-            if (in.getVersion().onOrAfter(Version.V_2_5_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 this.replicated = in.readBoolean();
             } else {
                 this.replicated = true;
@@ -753,7 +753,7 @@ public class ReplicationTracker extends AbstractIndexShardComponent implements L
             out.writeZLong(globalCheckpoint);
             out.writeBoolean(inSync);
             out.writeBoolean(tracked);
-            if (out.getVersion().onOrAfter(Version.V_2_5_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 out.writeBoolean(replicated);
             }
         }

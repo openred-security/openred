@@ -182,7 +182,7 @@ public class TermVectorsRequest extends SingleShardRequest<TermVectorsRequest> i
 
     TermVectorsRequest(StreamInput in) throws IOException {
         super(in);
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             // types no longer supported; ignore for BWC
             in.readString();
         }
@@ -190,7 +190,7 @@ public class TermVectorsRequest extends SingleShardRequest<TermVectorsRequest> i
 
         if (in.readBoolean()) {
             doc = in.readBytesReference();
-            if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 mediaType = in.readMediaType();
             } else {
                 mediaType = in.readEnum(XContentType.class);
@@ -537,7 +537,7 @@ public class TermVectorsRequest extends SingleShardRequest<TermVectorsRequest> i
     @Override
     public void writeTo(StreamOutput out) throws IOException {
         super.writeTo(out);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             // types no longer supported; send "_doc" for bwc
             out.writeString(MapperService.SINGLE_MAPPING_NAME);
         }
@@ -546,7 +546,7 @@ public class TermVectorsRequest extends SingleShardRequest<TermVectorsRequest> i
         out.writeBoolean(doc != null);
         if (doc != null) {
             out.writeBytesReference(doc);
-            if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 mediaType.writeTo(out);
             } else {
                 out.writeEnum((XContentType) mediaType);

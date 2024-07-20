@@ -176,7 +176,7 @@ public class IndexingStats implements Writeable, ToXContentFragment {
             isThrottled = in.readBoolean();
             throttleTimeInMillis = in.readLong();
 
-            if (in.getVersion().onOrAfter(Version.V_2_11_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 docStatusStats = in.readOptionalWriteable(DocStatusStats::new);
             } else {
                 docStatusStats = null;
@@ -312,7 +312,7 @@ public class IndexingStats implements Writeable, ToXContentFragment {
             out.writeBoolean(isThrottled);
             out.writeLong(throttleTimeInMillis);
 
-            if (out.getVersion().onOrAfter(Version.V_2_11_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 out.writeOptionalWriteable(docStatusStats);
             }
         }
@@ -350,7 +350,7 @@ public class IndexingStats implements Writeable, ToXContentFragment {
 
     public IndexingStats(StreamInput in) throws IOException {
         totalStats = new Stats(in);
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             if (in.readBoolean()) {
                 Map<String, Stats> typeStats = in.readMap(StreamInput::readString, Stats::new);
                 assert typeStats.size() == 1;
@@ -415,7 +415,7 @@ public class IndexingStats implements Writeable, ToXContentFragment {
     @Override
     public void writeTo(StreamOutput out) throws IOException {
         totalStats.writeTo(out);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             out.writeBoolean(false);
         }
     }

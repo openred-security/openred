@@ -297,12 +297,12 @@ public abstract class RecoverySource implements Writeable, ToXContentObject {
             } else {
                 index = new IndexId(in.readString(), IndexMetadata.INDEX_UUID_NA_VALUE);
             }
-            if (in.getVersion().onOrAfter(Version.V_2_7_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 isSearchableSnapshot = in.readBoolean();
             } else {
                 isSearchableSnapshot = false;
             }
-            if (in.getVersion().onOrAfter(Version.V_2_9_0)) {
+            if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
                 remoteStoreIndexShallowCopy = in.readBoolean();
                 sourceRemoteStoreRepository = in.readOptionalString();
             } else {
@@ -355,10 +355,10 @@ public abstract class RecoverySource implements Writeable, ToXContentObject {
             } else {
                 out.writeString(index.getName());
             }
-            if (out.getVersion().onOrAfter(Version.V_2_7_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 out.writeBoolean(isSearchableSnapshot);
             }
-            if (out.getVersion().onOrAfter(Version.V_2_9_0)) {
+            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
                 out.writeBoolean(remoteStoreIndexShallowCopy);
                 out.writeOptionalString(sourceRemoteStoreRepository);
             }

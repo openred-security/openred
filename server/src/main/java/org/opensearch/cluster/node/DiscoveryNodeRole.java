@@ -254,7 +254,7 @@ public abstract class DiscoveryNodeRole implements Comparable<DiscoveryNodeRole>
 
         @Override
         public DiscoveryNodeRole getCompatibilityRole(Version nodeVersion) {
-            if (nodeVersion.onOrAfter(Version.V_2_0_0)) {
+            if (nodeVersion.onOrAfter(Version.V_1_0_0)) {
                 return this;
             } else {
                 return DiscoveryNodeRole.MASTER_ROLE;

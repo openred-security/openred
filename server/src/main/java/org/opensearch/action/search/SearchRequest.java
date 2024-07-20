@@ -231,7 +231,7 @@ public class SearchRequest extends ActionRequest implements IndicesRequest.Repla
         preference = in.readOptionalString();
         scroll = in.readOptionalWriteable(Scroll::new);
         source = in.readOptionalWriteable(SearchSourceBuilder::new);
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             // types no longer relevant so ignore
             String[] types = in.readStringArray();
             if (types.length > 0) {
@@ -262,13 +262,13 @@ public class SearchRequest extends ActionRequest implements IndicesRequest.Repla
             ccsMinimizeRoundtrips = in.readBoolean();
         }
 
-        if (in.getVersion().onOrAfter(Version.V_1_1_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             cancelAfterTimeInterval = in.readOptionalTimeValue();
         }
-        if (in.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             pipeline = in.readOptionalString();
         }
-        if (in.getVersion().onOrAfter(Version.V_2_12_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             phaseTook = in.readOptionalBoolean();
         }
     }
@@ -282,7 +282,7 @@ public class SearchRequest extends ActionRequest implements IndicesRequest.Repla
         out.writeOptionalString(preference);
         out.writeOptionalWriteable(scroll);
         out.writeOptionalWriteable(source);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             // types not supported so send an empty array to previous versions
             out.writeStringArray(Strings.EMPTY_ARRAY);
         }
@@ -305,13 +305,13 @@ public class SearchRequest extends ActionRequest implements IndicesRequest.Repla
             out.writeBoolean(ccsMinimizeRoundtrips);
         }
 
-        if (out.getVersion().onOrAfter(Version.V_1_1_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalTimeValue(cancelAfterTimeInterval);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalString(pipeline);
         }
-        if (out.getVersion().onOrAfter(Version.V_2_12_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalBoolean(phaseTook);
         }
     }

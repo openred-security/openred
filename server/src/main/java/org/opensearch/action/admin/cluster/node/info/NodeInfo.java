@@ -103,7 +103,7 @@ public class NodeInfo extends BaseNodeResponse {
         if (in.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
             addInfoIfNonNull(AggregationInfo.class, in.readOptionalWriteable(AggregationInfo::new));
         }
-        if (in.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             addInfoIfNonNull(SearchPipelineInfo.class, in.readOptionalWriteable(SearchPipelineInfo::new));
         }
     }
@@ -233,7 +233,7 @@ public class NodeInfo extends BaseNodeResponse {
         if (out.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
             out.writeOptionalWriteable(getInfo(AggregationInfo.class));
         }
-        if (out.getVersion().onOrAfter(Version.V_2_7_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeOptionalWriteable(getInfo(SearchPipelineInfo.class));
         }
     }

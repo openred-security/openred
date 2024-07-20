@@ -74,7 +74,7 @@ public class ValidateQueryRequest extends BroadcastRequest<ValidateQueryRequest>
     public ValidateQueryRequest(StreamInput in) throws IOException {
         super(in);
         query = in.readNamedWriteable(QueryBuilder.class);
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             int typesSize = in.readVInt();
             if (typesSize > 0) {
                 for (int i = 0; i < typesSize; i++) {
@@ -163,7 +163,7 @@ public class ValidateQueryRequest extends BroadcastRequest<ValidateQueryRequest>
     public void writeTo(StreamOutput out) throws IOException {
         super.writeTo(out);
         out.writeNamedWriteable(query);
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             out.writeVInt(0);   // no types to filter
         }
         out.writeBoolean(explain);

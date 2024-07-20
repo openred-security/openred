@@ -135,7 +135,7 @@ public class TransportShardFlushAction extends TransportReplicationAction<ShardF
 
         private PreShardSyncedFlushRequest(StreamInput in) throws IOException {
             super(in);
-            assert in.getVersion().before(Version.V_2_0_0) : "received pre_sync request from a new node";
+            assert in.getVersion().before(Version.V_0_0_0) : "received pre_sync request from a new node";
             this.shardId = new ShardId(in);
         }
 

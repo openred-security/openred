@@ -87,7 +87,7 @@ public class SimulatePipelineRequest extends ActionRequest implements ToXContent
         id = in.readOptionalString();
         verbose = in.readBoolean();
         source = in.readBytesReference();
-        if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             mediaType = in.readMediaType();
         } else {
             mediaType = in.readEnum(XContentType.class);
@@ -129,7 +129,7 @@ public class SimulatePipelineRequest extends ActionRequest implements ToXContent
         out.writeOptionalString(id);
         out.writeBoolean(verbose);
         out.writeBytesReference(source);
-        if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             mediaType.writeTo(out);
         } else {
             out.writeEnum((XContentType) mediaType);

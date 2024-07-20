@@ -65,7 +65,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-import static org.opensearch.Version.V_2_7_0;
+import static org.opensearch.Version.V_1_0_0;
 import static org.opensearch.common.util.FeatureFlags.SEARCHABLE_SNAPSHOT_EXTENDED_COMPATIBILITY;
 import static org.opensearch.index.codec.fuzzy.FuzzySetParameters.DEFAULT_FALSE_POSITIVE_PROBABILITY;
 import static org.opensearch.index.mapper.MapperService.INDEX_MAPPING_DEPTH_LIMIT_SETTING;
@@ -936,7 +936,7 @@ public final class IndexSettings {
         mergeSchedulerConfig = new MergeSchedulerConfig(this);
         gcDeletesInMillis = scopedSettings.get(INDEX_GC_DELETES_SETTING).getMillis();
         softDeleteEnabled = scopedSettings.get(INDEX_SOFT_DELETES_SETTING);
-        assert softDeleteEnabled || version.before(Version.V_2_0_0) : "soft deletes must be enabled in version " + version;
+        assert softDeleteEnabled || version.before(Version.V_0_0_0) : "soft deletes must be enabled in version " + version;
         softDeleteRetentionOperations = scopedSettings.get(INDEX_SOFT_DELETES_RETENTION_OPERATIONS_SETTING);
         retentionLeaseMillis = scopedSettings.get(INDEX_SOFT_DELETES_RETENTION_LEASE_PERIOD_SETTING).millis();
         warmerEnabled = scopedSettings.get(INDEX_WARMER_ENABLED_SETTING);
@@ -979,7 +979,7 @@ public final class IndexSettings {
          * up cast the SortField to gain some sort query optimizations.
          * Now this sortField (IndexSort) is stored in SegmentInfo and we need to maintain backward compatibility for them.
          */
-        widenIndexSortType = IndexMetadata.SETTING_INDEX_VERSION_CREATED.get(settings).before(V_2_7_0);
+        widenIndexSortType = IndexMetadata.SETTING_INDEX_VERSION_CREATED.get(settings).before(V_1_0_0);
 
         setEnableFuzzySetForDocId(scopedSettings.get(INDEX_DOC_ID_FUZZY_SET_ENABLED_SETTING));
         setDocIdFuzzySetFalsePositiveProbability(scopedSettings.get(INDEX_DOC_ID_FUZZY_SET_FALSE_POSITIVE_PROBABILITY_SETTING));

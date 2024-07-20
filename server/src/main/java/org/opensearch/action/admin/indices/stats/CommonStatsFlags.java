@@ -82,7 +82,7 @@ public class CommonStatsFlags implements Writeable, Cloneable {
                 flags.add(flag);
             }
         }
-        if (in.getVersion().before(Version.V_2_0_0)) {
+        if (in.getVersion().before(Version.V_0_0_0)) {
             in.readStringArray();
         }
         groups = in.readStringArray();
@@ -92,7 +92,7 @@ public class CommonStatsFlags implements Writeable, Cloneable {
         if (in.getVersion().onOrAfter(LegacyESVersion.V_7_2_0)) {
             includeUnloadedSegments = in.readBoolean();
         }
-        if (in.getVersion().onOrAfter(Version.V_1_2_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             includeAllShardIndexingPressureTrackers = in.readBoolean();
             includeOnlyTopIndexingPressureMetrics = in.readBoolean();
         }
@@ -106,7 +106,7 @@ public class CommonStatsFlags implements Writeable, Cloneable {
         }
         out.writeLong(longFlags);
 
-        if (out.getVersion().before(Version.V_2_0_0)) {
+        if (out.getVersion().before(Version.V_0_0_0)) {
             out.writeStringArrayNullable(Strings.EMPTY_ARRAY);
         }
         out.writeStringArrayNullable(groups);
@@ -116,7 +116,7 @@ public class CommonStatsFlags implements Writeable, Cloneable {
         if (out.getVersion().onOrAfter(LegacyESVersion.V_7_2_0)) {
             out.writeBoolean(includeUnloadedSegments);
         }
-        if (out.getVersion().onOrAfter(Version.V_1_2_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             out.writeBoolean(includeAllShardIndexingPressureTrackers);
             out.writeBoolean(includeOnlyTopIndexingPressureMetrics);
         }

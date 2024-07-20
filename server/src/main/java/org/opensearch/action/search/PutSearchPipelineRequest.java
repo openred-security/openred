@@ -49,7 +49,7 @@ public class PutSearchPipelineRequest extends AcknowledgedRequest<PutSearchPipel
         super(in);
         id = in.readString();
         source = in.readBytesReference();
-        if (in.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
             mediaType = in.readMediaType();
         } else {
             mediaType = in.readEnum(XContentType.class);
@@ -78,7 +78,7 @@ public class PutSearchPipelineRequest extends AcknowledgedRequest<PutSearchPipel
         super.writeTo(out);
         out.writeString(id);
         out.writeBytesReference(source);
-        if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             mediaType.writeTo(out);
         } else {
             out.writeEnum((XContentType) mediaType);

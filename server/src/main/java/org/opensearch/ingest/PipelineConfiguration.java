@@ -144,7 +144,7 @@ public final class PipelineConfiguration extends AbstractDiffable<PipelineConfig
         return new PipelineConfiguration(
             in.readString(),
             in.readBytesReference(),
-            in.getVersion().onOrAfter(Version.V_2_10_0) ? in.readMediaType() : in.readEnum(XContentType.class)
+            in.getVersion().onOrAfter(Version.V_1_0_0) ? in.readMediaType() : in.readEnum(XContentType.class)
         );
     }
 
@@ -161,7 +161,7 @@ public final class PipelineConfiguration extends AbstractDiffable<PipelineConfig
     public void writeTo(StreamOutput out) throws IOException {
         out.writeString(id);
         out.writeBytesReference(config);
-        if (out.getVersion().onOrAfter(Version.V_2_10_0)) {
+        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
             mediaType.writeTo(out);
         } else {
             out.writeEnum((XContentType) mediaType);

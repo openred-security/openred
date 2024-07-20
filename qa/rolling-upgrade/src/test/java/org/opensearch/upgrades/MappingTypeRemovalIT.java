@@ -48,7 +48,7 @@ public class MappingTypeRemovalIT extends AbstractRollingTestCase {
 
         switch (CLUSTER_TYPE) {
             case OLD:
-                if (UPGRADE_FROM_VERSION.before(Version.V_2_0_0)) {
+                if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
                     Settings.Builder settings = Settings.builder()
                         .put(IndexMetadata.INDEX_NUMBER_OF_SHARDS_SETTING.getKey(), 1)
                         .put(IndexMetadata.INDEX_NUMBER_OF_REPLICAS_SETTING.getKey(), 0);
@@ -67,14 +67,14 @@ public class MappingTypeRemovalIT extends AbstractRollingTestCase {
                 break;
             case MIXED:
                 waitForClusterGreenStatus();
-                if (UPGRADE_FROM_VERSION.before(Version.V_2_0_0)) {
+                if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
                     assertCount(indexName, 1, 1);
                     assertCount(templateIndexName, 1, 1);
                     assertCount(indexWithoutTypeName, 1, 1);
                 }
                 break;
             case UPGRADED:
-                if (UPGRADE_FROM_VERSION.before(Version.V_2_0_0)) {
+                if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
                     // Assert documents created with mapping prior to OS 2.0 are accessible.
                     assertCount(indexName, 1, 1);
                     bulk(indexName, CLUSTER_TYPE.name(), 1);
@@ -111,7 +111,7 @@ public class MappingTypeRemovalIT extends AbstractRollingTestCase {
 
         switch (CLUSTER_TYPE) {
             case OLD:
-                if (UPGRADE_FROM_VERSION.before(Version.V_2_0_0)) {
+                if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
                     Settings.Builder settings = Settings.builder()
                         .put(IndexMetadata.INDEX_NUMBER_OF_SHARDS_SETTING.getKey(), 1)
                         .put(IndexMetadata.INDEX_NUMBER_OF_REPLICAS_SETTING.getKey(), 0);
@@ -125,12 +125,12 @@ public class MappingTypeRemovalIT extends AbstractRollingTestCase {
                 break;
             case MIXED:
                 waitForClusterGreenStatus();
-                if (UPGRADE_FROM_VERSION.before(Version.V_2_0_0)) {
+                if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
                     assertCount(indexName, 1, 1);
                 }
                 break;
             case UPGRADED:
-                if (UPGRADE_FROM_VERSION.before(Version.V_2_0_0)) {
+                if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
                     // Assert documents created with mapping prior to OS 2.0 are accessible.
                     assertCount(indexName, 1, 1);
                     bulk(indexName, CLUSTER_TYPE.name(), 1);
@@ -157,7 +157,7 @@ public class MappingTypeRemovalIT extends AbstractRollingTestCase {
 
         switch (CLUSTER_TYPE) {
             case OLD:
-                if (UPGRADE_FROM_VERSION.before(Version.V_2_0_0)) {
+                if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
                     Settings.Builder settings = Settings.builder()
                         .put(IndexMetadata.INDEX_NUMBER_OF_SHARDS_SETTING.getKey(), 1)
                         .put(IndexMetadata.INDEX_NUMBER_OF_REPLICAS_SETTING.getKey(), 0);
@@ -176,7 +176,7 @@ public class MappingTypeRemovalIT extends AbstractRollingTestCase {
                 waitForClusterGreenStatus();
                 break;
             case UPGRADED:
-                if (UPGRADE_FROM_VERSION.before(Version.V_2_0_0)) {
+                if (UPGRADE_FROM_VERSION.before(Version.V_0_0_0)) {
                     registerRepository(repositoryName,"fs", true, Settings.builder()
                         .put("location", REPOSITORY_LOCATION)
                         .build());

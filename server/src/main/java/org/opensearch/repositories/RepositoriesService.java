@@ -688,13 +688,13 @@ public class RepositoriesService extends AbstractLifecycleComponent implements C
     ) {
         // We can add more validations here for repository settings in the future.
         Version minVersionInCluster = clusterService.state().getNodes().getMinNodeVersion();
-        if (REMOTE_STORE_INDEX_SHALLOW_COPY.get(repositoryMetadataSettings) && !minVersionInCluster.onOrAfter(Version.V_2_9_0)) {
+        if (REMOTE_STORE_INDEX_SHALLOW_COPY.get(repositoryMetadataSettings) && !minVersionInCluster.onOrAfter(Version.V_1_0_0)) {
             throw new RepositoryException(
                 repositoryName,
                 "setting "
                     + REMOTE_STORE_INDEX_SHALLOW_COPY.getKey()
                     + " cannot be enabled as some of the nodes in cluster are on version older than "
-                    + Version.V_2_9_0
+                    + Version.V_0_0_0
                     + ". Minimum node version in cluster is: "
                     + minVersionInCluster
             );
