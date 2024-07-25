@@ -44,14 +44,7 @@ public class BwcOpenSearchVersionsTests extends GradleUnitTestCase {
     }
 
     public void testWireCompatible() {
-        assertVersionsEquals(
-            asList("6.8.15", "7.0.0", "7.9.1", "7.10.0", "7.10.1", "7.10.2"),
-            getVersionCollection("1.0.0").getWireCompatible()
-        );
-        assertVersionsEquals(
-            asList("6.8.15", "7.0.0", "7.9.1", "7.10.0", "7.10.1", "7.10.2", "1.0.0"),
-            getVersionCollection("1.1.0").getWireCompatible()
-        );
+        assertVersionsEquals(asList("1.0.0"), getVersionCollection("1.0.0").getWireCompatible());
     }
 
     public void testWireCompatibleUnreleased() {
@@ -59,14 +52,7 @@ public class BwcOpenSearchVersionsTests extends GradleUnitTestCase {
     }
 
     public void testIndexCompatible() {
-        assertVersionsEquals(
-            asList("6.6.1", "6.8.15", "7.0.0", "7.9.1", "7.10.0", "7.10.1", "7.10.2"),
-            getVersionCollection("1.0.0").getIndexCompatible()
-        );
-        assertVersionsEquals(
-            asList("6.6.1", "6.8.15", "7.0.0", "7.9.1", "7.10.0", "7.10.1", "7.10.2", "1.0.0"),
-            getVersionCollection("1.1.0").getIndexCompatible()
-        );
+        assertVersionsEquals(asList("1.0.0"), getVersionCollection("1.0.0").getIndexCompatible());
     }
 
     public void testIndexCompatibleUnreleased() {

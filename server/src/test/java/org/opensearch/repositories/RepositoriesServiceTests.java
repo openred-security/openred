@@ -142,7 +142,7 @@ public class RepositoriesServiceTests extends OpenSearchTestCase {
         );
 
         DiscoveryNodes nodes = mock(DiscoveryNodes.class);
-        when(nodes.getMinNodeVersion()).thenReturn(Version.V_2_9_0);
+        when(nodes.getMinNodeVersion()).thenReturn(Version.V_1_0_0);
         ClusterState currentClusterState = mock(ClusterState.class);
         when(currentClusterState.getNodes()).thenReturn(nodes);
         when(clusterService.state()).thenReturn(currentClusterState);

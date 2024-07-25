@@ -562,7 +562,7 @@ public class IndexServiceTests extends OpenSearchSingleNodeTestCase {
     public void testIndexSortBackwardCompatible() {
         Settings settings = Settings.builder()
             .put(IndexSettings.INDEX_TRANSLOG_SYNC_INTERVAL_SETTING.getKey(), "0ms") // disable
-            .put(IndexMetadata.SETTING_INDEX_VERSION_CREATED.getKey(), Version.V_2_6_1)
+            .put(IndexMetadata.SETTING_INDEX_VERSION_CREATED.getKey(), Version.V_1_0_0)
             .putList("index.sort.field", "sortfield")
             .build();
         try {

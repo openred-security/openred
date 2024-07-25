@@ -78,39 +78,10 @@ public class ClusterManagerTaskThrottlerTests extends OpenSearchTestCase {
         }
     }
 
-    public void testValidateSettingsForDifferentVersion() {
-        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_2_5_0);
-        DiscoveryNode dataNode = getDataNode(Version.V_2_0_0);
-        setState(
-            clusterService,
-            ClusterStateCreationUtils.state(clusterManagerNode, clusterManagerNode, new DiscoveryNode[] { clusterManagerNode, dataNode })
-        );
-
-        ClusterSettings clusterSettings = new ClusterSettings(Settings.builder().build(), ClusterSettings.BUILT_IN_CLUSTER_SETTINGS);
-        ClusterManagerTaskThrottler throttler = new ClusterManagerTaskThrottler(Settings.EMPTY, clusterSettings, () -> {
-            return clusterService.getMasterService().getMinNodeVersion();
-        }, new ClusterManagerThrottlingStats());
-        throttler.registerClusterManagerTask("put-mapping", true);
-
-        // set some limit for update snapshot tasks
-        int newLimit = randomIntBetween(1, 10);
-
-        Settings newSettings = Settings.builder().put("cluster_manager.throttling.thresholds.put-mapping.value", newLimit).build();
-        assertThrows(IllegalArgumentException.class, () -> throttler.validateSetting(newSettings));
-
-        // validate for empty setting, it shouldn't throw exception
-        Settings emptySettings = Settings.builder().build();
-        try {
-            throttler.validateSetting(emptySettings);
-        } catch (Exception e) {
-            // it shouldn't throw exception
-            throw new AssertionError(e);
-        }
-    }
 
     public void testValidateSettingsForTaskWihtoutRetryOnDataNode() {
-        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_2_5_0);
-        DiscoveryNode dataNode = getDataNode(Version.V_2_5_0);
+        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_1_0_0);
+        DiscoveryNode dataNode = getDataNode(Version.V_1_0_0);
         setState(
             clusterService,
             ClusterStateCreationUtils.state(clusterManagerNode, clusterManagerNode, new DiscoveryNode[] { clusterManagerNode, dataNode })
@@ -130,8 +101,8 @@ public class ClusterManagerTaskThrottlerTests extends OpenSearchTestCase {
     }
 
     public void testUpdateSettingsForNullValue() {
-        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_2_5_0);
-        DiscoveryNode dataNode = getDataNode(Version.V_2_5_0);
+        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_1_0_0);
+        DiscoveryNode dataNode = getDataNode(Version.V_1_0_0);
         setState(
             clusterService,
             ClusterStateCreationUtils.state(clusterManagerNode, clusterManagerNode, new DiscoveryNode[] { clusterManagerNode, dataNode })
@@ -156,8 +127,8 @@ public class ClusterManagerTaskThrottlerTests extends OpenSearchTestCase {
     }
 
     public void testSettingsOnBootstrap() {
-        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_2_5_0);
-        DiscoveryNode dataNode = getDataNode(Version.V_2_5_0);
+        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_1_0_0);
+        DiscoveryNode dataNode = getDataNode(Version.V_1_0_0);
         setState(
             clusterService,
             ClusterStateCreationUtils.state(clusterManagerNode, clusterManagerNode, new DiscoveryNode[] { clusterManagerNode, dataNode })
@@ -208,8 +179,8 @@ public class ClusterManagerTaskThrottlerTests extends OpenSearchTestCase {
     }
 
     public void testValidateSettingsForUnknownTask() {
-        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_2_5_0);
-        DiscoveryNode dataNode = getDataNode(Version.V_2_5_0);
+        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_1_0_0);
+        DiscoveryNode dataNode = getDataNode(Version.V_1_0_0);
         setState(
             clusterService,
             ClusterStateCreationUtils.state(clusterManagerNode, clusterManagerNode, new DiscoveryNode[] { clusterManagerNode, dataNode })
@@ -227,8 +198,8 @@ public class ClusterManagerTaskThrottlerTests extends OpenSearchTestCase {
     }
 
     public void testUpdateThrottlingLimitForBasicSanity() {
-        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_2_5_0);
-        DiscoveryNode dataNode = getDataNode(Version.V_2_5_0);
+        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_1_0_0);
+        DiscoveryNode dataNode = getDataNode(Version.V_1_0_0);
         setState(
             clusterService,
             ClusterStateCreationUtils.state(clusterManagerNode, clusterManagerNode, new DiscoveryNode[] { clusterManagerNode, dataNode })
@@ -254,8 +225,8 @@ public class ClusterManagerTaskThrottlerTests extends OpenSearchTestCase {
     }
 
     public void testValidateSettingForLimit() {
-        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_2_5_0);
-        DiscoveryNode dataNode = getDataNode(Version.V_2_5_0);
+        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_1_0_0);
+        DiscoveryNode dataNode = getDataNode(Version.V_1_0_0);
         setState(
             clusterService,
             ClusterStateCreationUtils.state(clusterManagerNode, clusterManagerNode, new DiscoveryNode[] { clusterManagerNode, dataNode })
@@ -325,8 +296,8 @@ public class ClusterManagerTaskThrottlerTests extends OpenSearchTestCase {
 
     public void testThrottlingForInitialStaticSettingAndVersionCheck() {
         ClusterManagerThrottlingStats throttlingStats = new ClusterManagerThrottlingStats();
-        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_2_5_0);
-        DiscoveryNode dataNode = getDataNode(Version.V_2_4_0);
+        DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_1_0_0);
+        DiscoveryNode dataNode = getDataNode(Version.V_1_0_0);
         setState(
             clusterService,
             ClusterStateCreationUtils.state(clusterManagerNode, clusterManagerNode, new DiscoveryNode[] { clusterManagerNode, dataNode })

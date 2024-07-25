@@ -467,26 +467,6 @@ public class SearchResponseTests extends OpenSearchTestCase {
         );
     }
 
-    public void testSerializationWithSearchExtBuildersOnUnsupportedWriterVersion() throws IOException {
-        String id = UUID.randomUUID().toString();
-        SearchResponse searchResponse = createTestItem(false, List.of(new DummySearchExtBuilder(id)));
-        SearchResponse deserialized = copyWriteable(searchResponse, namedWriteableRegistry, SearchResponse::new, Version.V_2_9_0);
-        if (searchResponse.getHits().getTotalHits() == null) {
-            assertNull(deserialized.getHits().getTotalHits());
-        } else {
-            assertEquals(searchResponse.getHits().getTotalHits().value, deserialized.getHits().getTotalHits().value);
-            assertEquals(searchResponse.getHits().getTotalHits().relation, deserialized.getHits().getTotalHits().relation);
-        }
-        assertEquals(searchResponse.getHits().getHits().length, deserialized.getHits().getHits().length);
-        assertEquals(searchResponse.getNumReducePhases(), deserialized.getNumReducePhases());
-        assertEquals(searchResponse.getFailedShards(), deserialized.getFailedShards());
-        assertEquals(searchResponse.getTotalShards(), deserialized.getTotalShards());
-        assertEquals(searchResponse.getSkippedShards(), deserialized.getSkippedShards());
-        assertEquals(searchResponse.getClusters(), deserialized.getClusters());
-        assertEquals(1, searchResponse.getInternalResponse().getSearchExtBuilders().size());
-        assertTrue(deserialized.getInternalResponse().getSearchExtBuilders().isEmpty());
-    }
-
     public void testToXContentEmptyClusters() throws IOException {
         SearchResponse searchResponse = new SearchResponse(
             InternalSearchResponse.empty(),

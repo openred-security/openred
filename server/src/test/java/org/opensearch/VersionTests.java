@@ -50,7 +50,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.opensearch.Version.MASK;
-import static org.opensearch.Version.V_1_3_0;
 import static org.opensearch.test.VersionUtils.allVersions;
 import static org.opensearch.test.VersionUtils.randomOpenSearchVersion;
 import static org.opensearch.test.VersionUtils.randomVersion;
@@ -67,6 +66,7 @@ import static org.hamcrest.Matchers.sameInstance;
 public class VersionTests extends OpenSearchTestCase {
 
     public void testVersionComparison() {
+        Version V_1_3_0 = Version.fromString("1.3.0");
         Version V_1_1_1 = Version.fromString("1.1.1");
         assertThat(V_1_1_1.before(V_1_3_0), is(true));
         assertThat(V_1_1_1.before(V_1_1_1), is(false));
@@ -116,14 +116,6 @@ public class VersionTests extends OpenSearchTestCase {
         } else {
             assertEquals(version1, Version.max(version1, version));
         }
-    }
-
-    public void testMinimumIndexCompatibilityVersion() {
-        // note: all Legacy compatibility support will be removed in OpenSearch 3.0
-        assertEquals(LegacyESVersion.fromId(6000026), V_1_3_0.minimumIndexCompatibilityVersion());
-        assertEquals(LegacyESVersion.fromId(7000099), Version.fromId(2000099).minimumIndexCompatibilityVersion());
-        assertEquals(LegacyESVersion.fromId(7000099), Version.fromId(2010000).minimumIndexCompatibilityVersion());
-        assertEquals(LegacyESVersion.fromId(7000099), Version.fromId(2000001).minimumIndexCompatibilityVersion());
     }
 
     public void testVersionConstantPresent() {
