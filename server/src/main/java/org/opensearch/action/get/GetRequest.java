@@ -91,9 +91,6 @@ public class GetRequest extends SingleShardRequest<GetRequest> implements Realti
         }
         id = in.readString();
         routing = in.readOptionalString();
-        if (in.getVersion().before(LegacyESVersion.V_7_0_0)) {
-            in.readOptionalString();
-        }
         preference = in.readOptionalString();
         refresh = in.readBoolean();
         storedFields = in.readOptionalStringArray();

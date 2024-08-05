@@ -150,18 +150,12 @@ public class RestoreSnapshotRequest extends ClusterManagerNodeRequest<RestoreSna
         includeGlobalState = in.readBoolean();
         partial = in.readBoolean();
         includeAliases = in.readBoolean();
-        if (in.getVersion().before(LegacyESVersion.V_7_7_0)) {
-            readSettingsFromStream(in); // formerly the unused settings field
-        }
         indexSettings = readSettingsFromStream(in);
         ignoreIndexSettings = in.readStringArray();
         snapshotUuid = in.readOptionalString();
-        if (FeatureFlags.isEnabled(FeatureFlags.SEARCHABLE_SNAPSHOT) && in.getVersion().onOrAfter(Version.V_2_4_0)) {
-            storageType = in.readEnum(StorageType.class);
-        }
-        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
-            sourceRemoteStoreRepository = in.readOptionalString();
-        }
+        storageType = in.readEnum(StorageType.class);
+        sourceRemoteStoreRepository = in.readOptionalString();
+        
     }
 
     @Override
@@ -180,12 +174,8 @@ public class RestoreSnapshotRequest extends ClusterManagerNodeRequest<RestoreSna
         writeSettingsToStream(indexSettings, out);
         out.writeStringArray(ignoreIndexSettings);
         out.writeOptionalString(snapshotUuid);
-        if (FeatureFlags.isEnabled(FeatureFlags.SEARCHABLE_SNAPSHOT) && out.getVersion().onOrAfter(Version.V_1_0_0)) {
-            out.writeEnum(storageType);
-        }
-        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
-            out.writeOptionalString(sourceRemoteStoreRepository);
-        }
+        out.writeEnum(storageType);
+        out.writeOptionalString(sourceRemoteStoreRepository);
     }
 
     @Override

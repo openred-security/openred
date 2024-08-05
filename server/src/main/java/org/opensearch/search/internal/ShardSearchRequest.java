@@ -258,11 +258,7 @@ public class ShardSearchRequest extends TransportRequest implements IndicesReque
             outboundNetworkTime = in.readVLong();
         }
         clusterAlias = in.readOptionalString();
-        if (in.getVersion().onOrAfter(LegacyESVersion.V_7_0_0)) {
-            allowPartialSearchResults = in.readBoolean();
-        } else {
-            allowPartialSearchResults = false;
-        }
+        allowPartialSearchResults = in.readBoolean();
         indexRoutings = in.readStringArray();
         preference = in.readOptionalString();
         canReturnNullResponseIfMatchNoDocs = in.readBoolean();
@@ -321,23 +317,16 @@ public class ShardSearchRequest extends TransportRequest implements IndicesReque
             out.writeVLong(nowInMillis);
         }
         out.writeOptionalBoolean(requestCache);
-        if (asKey == false && out.getVersion().onOrAfter(Version.V_1_0_0)) {
+
+        out.writeOptionalString(clusterAlias);
+        out.writeBoolean(allowPartialSearchResults);
+        if (asKey == false) {
             out.writeVLong(inboundNetworkTime);
             out.writeVLong(outboundNetworkTime);
-        }
-        out.writeOptionalString(clusterAlias);
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_0_0)) {
-            out.writeBoolean(allowPartialSearchResults);
-        }
-        if (asKey == false) {
             out.writeStringArray(indexRoutings);
             out.writeOptionalString(preference);
-        }
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_7_0) && asKey == false) {
             out.writeBoolean(canReturnNullResponseIfMatchNoDocs);
             out.writeOptionalWriteable(bottomSortValues);
-        }
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_10_0) && asKey == false) {
             out.writeOptionalWriteable(readerId);
             out.writeOptionalTimeValue(keepAlive);
         }
