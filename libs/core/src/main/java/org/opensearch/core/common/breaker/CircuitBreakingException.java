@@ -31,7 +31,6 @@
 
 package org.opensearch.core.common.breaker;
 
-import org.opensearch.LegacyESVersion;
 import org.opensearch.OpenSearchException;
 import org.opensearch.core.common.io.stream.StreamInput;
 import org.opensearch.core.common.io.stream.StreamOutput;
@@ -78,7 +77,7 @@ public class CircuitBreakingException extends OpenSearchException {
         out.writeLong(byteLimit);
         out.writeLong(bytesWanted);
         out.writeEnum(durability);
-        
+
     }
 
     public long getBytesWanted() {
