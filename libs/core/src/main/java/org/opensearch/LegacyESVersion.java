@@ -47,7 +47,6 @@ import java.util.Map;
  * @opensearch.internal
  */
 public class LegacyESVersion extends Version {
-
     public static final LegacyESVersion V_7_0_0 = new LegacyESVersion(7000099, org.apache.lucene.util.Version.LUCENE_8_0_0);
     public static final LegacyESVersion V_7_0_1 = new LegacyESVersion(7000199, org.apache.lucene.util.Version.LUCENE_8_0_0);
     public static final LegacyESVersion V_7_1_0 = new LegacyESVersion(7010099, org.apache.lucene.util.Version.LUCENE_8_0_0);

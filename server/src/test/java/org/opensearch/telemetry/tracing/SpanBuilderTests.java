@@ -119,7 +119,7 @@ public class SpanBuilderTests extends OpenSearchTestCase {
         return new Transport.Connection() {
             @Override
             public DiscoveryNode getNode() {
-                return new DiscoveryNode("local", new TransportAddress(TransportAddress.META_ADDRESS, 9200), Version.V_2_0_0);
+                return new DiscoveryNode("local", new TransportAddress(TransportAddress.META_ADDRESS, 9200), Version.V_1_0_0);
             }
 
             @Override

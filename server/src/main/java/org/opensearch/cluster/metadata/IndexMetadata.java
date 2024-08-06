@@ -32,7 +32,6 @@
 
 package org.opensearch.cluster.metadata;
 
-import org.opensearch.LegacyESVersion;
 import org.opensearch.Version;
 import org.opensearch.action.admin.indices.rollover.RolloverInfo;
 import org.opensearch.action.support.ActiveShardCount;
@@ -638,8 +637,6 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
 
     public static final String INDEX_STATE_FILE_PREFIX = "state-";
 
-    static final Version SYSTEM_INDEX_FLAG_ADDED = LegacyESVersion.V_7_10_0;
-
     private final int routingNumShards;
     private final int routingFactor;
     private final int routingPartitionSize;
@@ -1068,11 +1065,7 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
             version = in.readLong();
             mappingVersion = in.readVLong();
             settingsVersion = in.readVLong();
-            if (in.getVersion().onOrAfter(LegacyESVersion.V_7_2_0)) {
-                aliasesVersion = in.readVLong();
-            } else {
-                aliasesVersion = 1;
-            }
+            aliasesVersion = in.readVLong();
             state = State.fromId(in.readByte());
             settings = Settings.readSettingsFromStream(in);
             primaryTerms = in.readVLongArray();
@@ -1085,11 +1078,7 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
                 DiffableUtils.StringSetValueSerializer.getInstance()
             );
             rolloverInfos = DiffableUtils.readJdkMapDiff(in, DiffableUtils.getStringKeySerializer(), ROLLOVER_INFO_DIFF_VALUE_READER);
-            if (in.getVersion().onOrAfter(SYSTEM_INDEX_FLAG_ADDED)) {
-                isSystem = in.readBoolean();
-            } else {
-                isSystem = false;
-            }
+            isSystem = in.readBoolean();
         }
 
         @Override
@@ -1099,9 +1088,7 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
             out.writeLong(version);
             out.writeVLong(mappingVersion);
             out.writeVLong(settingsVersion);
-            if (out.getVersion().onOrAfter(LegacyESVersion.V_7_2_0)) {
-                out.writeVLong(aliasesVersion);
-            }
+            out.writeVLong(aliasesVersion);
             out.writeByte(state.id);
             Settings.writeSettingsToStream(settings, out);
             out.writeVLongArray(primaryTerms);
@@ -1110,9 +1097,7 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
             customData.writeTo(out);
             inSyncAllocationIds.writeTo(out);
             rolloverInfos.writeTo(out);
-            if (out.getVersion().onOrAfter(SYSTEM_INDEX_FLAG_ADDED)) {
-                out.writeBoolean(isSystem);
-            }
+            out.writeBoolean(isSystem);
         }
 
         @Override
@@ -1141,11 +1126,7 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
         builder.version(in.readLong());
         builder.mappingVersion(in.readVLong());
         builder.settingsVersion(in.readVLong());
-        if (in.getVersion().onOrAfter(LegacyESVersion.V_7_2_0)) {
-            builder.aliasesVersion(in.readVLong());
-        } else {
-            builder.aliasesVersion(1);
-        }
+        builder.aliasesVersion(in.readVLong());
         builder.setRoutingNumShards(in.readInt());
         builder.state(State.fromId(in.readByte()));
         builder.settings(readSettingsFromStream(in));
@@ -1176,9 +1157,7 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
         for (int i = 0; i < rolloverAliasesSize; i++) {
             builder.putRolloverInfo(new RolloverInfo(in));
         }
-        if (in.getVersion().onOrAfter(SYSTEM_INDEX_FLAG_ADDED)) {
-            builder.system(in.readBoolean());
-        }
+        builder.system(in.readBoolean());
         return builder.build();
     }
 
@@ -1188,9 +1167,7 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
         out.writeLong(version);
         out.writeVLong(mappingVersion);
         out.writeVLong(settingsVersion);
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_2_0)) {
-            out.writeVLong(aliasesVersion);
-        }
+        out.writeVLong(aliasesVersion);
         out.writeInt(routingNumShards);
         out.writeByte(state.id());
         writeSettingsToStream(settings, out);
@@ -1217,9 +1194,7 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
         for (final RolloverInfo cursor : rolloverInfos.values()) {
             cursor.writeTo(out);
         }
-        if (out.getVersion().onOrAfter(SYSTEM_INDEX_FLAG_ADDED)) {
-            out.writeBoolean(isSystem);
-        }
+        out.writeBoolean(isSystem);
     }
 
     public boolean isSystem() {
@@ -1866,13 +1841,10 @@ public class IndexMetadata implements Diffable<IndexMetadata>, ToXContentFragmen
             }
             // Reference:
             // https://github.com/opensearch-project/OpenSearch/blob/4dde0f2a3b445b2fc61dab29c5a2178967f4a3e3/server/src/main/java/org/opensearch/cluster/metadata/IndexMetadata.java#L1620-L1628
-            Version legacyVersion = LegacyESVersion.fromId(6050099);
-            if (Assertions.ENABLED && indexCreated(builder.settings).onOrAfter(legacyVersion)) {
+            if (Assertions.ENABLED) {
                 assert mappingVersion : "mapping version should be present for indices";
                 assert settingsVersion : "settings version should be present for indices";
-            }
-            if (Assertions.ENABLED && indexCreated(builder.settings).onOrAfter(LegacyESVersion.V_7_2_0)) {
-                assert aliasesVersion : "aliases version should be present for indices created on or after 7.2.0";
+                assert aliasesVersion : "aliases version should be present for indices created on or after 1.0.0";
             }
             return builder.build();
         }

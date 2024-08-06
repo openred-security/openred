@@ -302,7 +302,7 @@ public class Version implements Comparable<Version>, ToXContentFragment {
             // we don't have LegacyESVersion.V_6 constants, so set it to its last minor
             return LegacyESVersion.fromId(6080099);
         } else if (major == 2) {
-            return LegacyESVersion.V_7_10_0;
+            return LegacyESVersion.fromId(7100099);
         } else if (major == 6) {
             // force the minimum compatibility for version 6 to 5.6 since we don't reference version 5 anymore
             return LegacyESVersion.fromId(5060099);
@@ -348,22 +348,11 @@ public class Version implements Comparable<Version>, ToXContentFragment {
     }
 
     private Version computeMinIndexCompatVersion() {
+        // openred. todo: We only have one major and support one major. Increase in the future when 2.x becomes available
         final int bwcMajor;
-        if (major == 5) {
-            bwcMajor = 2; // we jumped from 2 to 5
-        } else if (major == 7 || major == 1) {
-            return LegacyESVersion.fromId(6000026);
-        } else if (major == 2) {
-            return LegacyESVersion.V_7_0_0;
-        } else {
-            bwcMajor = major - 1;
-        }
+        bwcMajor = 1;
         final int bwcMinor = 0;
-        if (major == 3) {
-            return Version.min(this, fromId((bwcMajor * 1000000 + bwcMinor * 10000 + 99) ^ MASK));
-        }
-        // todo remove below when LegacyESVersion is removed in 3.0
-        return Version.min(this, fromId((bwcMajor * 1000000 + bwcMinor * 10000 + 99)));
+        return Version.min(this, fromId((bwcMajor * 1000000 + bwcMinor * 10000 + 99) ^ MASK));
     }
 
     /**

@@ -105,7 +105,7 @@ public class IndicesModuleTests extends OpenSearchTestCase {
     public void testBuiltinMappers() {
         IndicesModule module = new IndicesModule(Collections.emptyList());
         {
-            Version version = VersionUtils.randomVersionBetween(random(), Version.V_2_0_0, Version.CURRENT);
+            Version version = VersionUtils.randomVersionBetween(random(), Version.V_1_0_0, Version.CURRENT);
             assertFalse(module.getMapperRegistry().getMapperParsers().isEmpty());
             assertFalse(module.getMapperRegistry().getMetadataMapperParsers(version).isEmpty());
             Map<String, MetadataFieldMapper.TypeParser> metadataMapperParsers = module.getMapperRegistry()
@@ -120,7 +120,7 @@ public class IndicesModuleTests extends OpenSearchTestCase {
             Version version = VersionUtils.randomVersionBetween(
                 random(),
                 Version.V_1_0_0,
-                VersionUtils.getPreviousVersion(Version.V_2_0_0)
+                VersionUtils.getPreviousVersion(Version.V_1_0_0)
             );
             assertEquals(EXPECTED_METADATA_FIELDS.length - 1, module.getMapperRegistry().getMetadataMapperParsers(version).size());
         }

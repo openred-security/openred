@@ -207,7 +207,7 @@ public class SnapshotsInProgressSerializationTests extends AbstractDiffableWireS
         try (BytesStreamOutput out = new BytesStreamOutput()) {
             snapshotsInProgress.writeTo(out);
             try (StreamInput in = out.bytes().streamInput()) {
-                in.setVersion(Version.V_2_7_0);
+                in.setVersion(Version.V_1_0_0);
                 actualSnapshotsInProgress = new SnapshotsInProgress(in);
                 assert in.available() != 0;
                 for (Entry curr_entry : actualSnapshotsInProgress.entries()) {
@@ -215,7 +215,7 @@ public class SnapshotsInProgressSerializationTests extends AbstractDiffableWireS
                 }
             }
             try (StreamInput in = out.bytes().streamInput()) {
-                in.setVersion(Version.V_2_9_0);
+                in.setVersion(Version.V_1_0_0);
                 actualSnapshotsInProgress = new SnapshotsInProgress(in);
                 assert in.available() == 0;
                 for (Entry curr_entry : actualSnapshotsInProgress.entries()) {
@@ -224,10 +224,10 @@ public class SnapshotsInProgressSerializationTests extends AbstractDiffableWireS
             }
         }
         try (BytesStreamOutput out = new BytesStreamOutput()) {
-            out.setVersion(Version.V_2_7_0);
+            out.setVersion(Version.V_1_0_0);
             snapshotsInProgress.writeTo(out);
             try (StreamInput in = out.bytes().streamInput()) {
-                in.setVersion(Version.V_2_7_0);
+                in.setVersion(Version.V_1_0_0);
                 actualSnapshotsInProgress = new SnapshotsInProgress(in);
                 assert in.available() == 0;
                 for (Entry curr_entry : actualSnapshotsInProgress.entries()) {

@@ -934,7 +934,7 @@ public class IndexSettingsTests extends OpenSearchTestCase {
     }
 
     public void testSetRemoteTranslogBufferIntervalDefaultSetting() {
-        Version createdVersion = VersionUtils.randomVersionBetween(random(), Version.V_2_0_0, Version.CURRENT);
+        Version createdVersion = VersionUtils.randomVersionBetween(random(), Version.V_1_0_0, Version.CURRENT);
         Settings settings = Settings.builder()
             .put(IndexMetadata.SETTING_INDEX_VERSION_CREATED.getKey(), createdVersion)
             .put(IndexMetadata.SETTING_REMOTE_STORE_ENABLED, true)

@@ -149,9 +149,7 @@ public class BwcVersions {
 
         groupByMajor = allVersions.stream()
             // openred: Adjusting major compatibility. No need for BWC for OS or ES.
-            .filter(
-                version -> (version.getMajor()) > (currentVersion.getMajor()) - 2
-            )
+            .filter(version -> (version.getMajor()) > (currentVersion.getMajor()) - 2)
             .collect(Collectors.groupingBy(Version::getMajor, Collectors.toList()));
 
         assertCurrentVersionMatchesParsed(currentVersionProperty);
@@ -275,10 +273,7 @@ public class BwcVersions {
 
         // the tip of the previous major is unreleased for sure, be it a minor or a bugfix
         if (currentVersion.getMajor() != 1) {
-            final Version latestOfPreviousMajor = getLatestVersionByKey(
-                this.groupByMajor,
-                currentVersion.getMajor() - 1
-            );
+            final Version latestOfPreviousMajor = getLatestVersionByKey(this.groupByMajor, currentVersion.getMajor() - 1);
             unreleased.add(latestOfPreviousMajor);
             if (latestOfPreviousMajor.getRevision() == 0) {
                 // if the previous major is a x.y.0 release, then the tip of the minor before that (y-1) is also unreleased
@@ -376,9 +371,10 @@ public class BwcVersions {
         int currentMajor = currentVersion.getMajor();
         int prevMajor = getPreviousMajor(currentMajor);
 
-        return Stream.concat(groupByMajor.getOrDefault(prevMajor, Collections.emptyList()).stream(), groupByMajor.getOrDefault(currentMajor, Collections.emptyList()).stream())
-            .filter(version -> version.equals(currentVersion) == false)
-            .collect(Collectors.toUnmodifiableList());
+        return Stream.concat(
+            groupByMajor.getOrDefault(prevMajor, Collections.emptyList()).stream(),
+            groupByMajor.getOrDefault(currentMajor, Collections.emptyList()).stream()
+        ).filter(version -> version.equals(currentVersion) == false).collect(Collectors.toUnmodifiableList());
     }
 
     public List<Version> getWireCompatible() {

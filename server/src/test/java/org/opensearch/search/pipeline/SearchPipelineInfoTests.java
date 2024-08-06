@@ -60,10 +60,10 @@ public class SearchPipelineInfoTests extends OpenSearchTestCase {
         );
         SearchPipelineInfo deserialized;
         try (BytesStreamOutput bytesStreamOutput = new BytesStreamOutput()) {
-            bytesStreamOutput.setVersion(Version.V_2_7_0);
+            bytesStreamOutput.setVersion(Version.V_1_0_0);
             searchPipelineInfo.writeTo(bytesStreamOutput);
             try (StreamInput bytesStreamInput = bytesStreamOutput.bytes().streamInput()) {
-                bytesStreamInput.setVersion(Version.V_2_7_0);
+                bytesStreamInput.setVersion(Version.V_1_0_0);
                 deserialized = new SearchPipelineInfo(bytesStreamInput);
             }
         }

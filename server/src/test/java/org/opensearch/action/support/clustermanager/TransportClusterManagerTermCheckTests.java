@@ -274,30 +274,6 @@ public class TransportClusterManagerTermCheckTests extends OpenSearchTestCase {
 
     }
 
-    public void testTermCheckOnOldVersionClusterManager() throws ExecutionException, InterruptedException {
-
-        setUpCluster(Version.V_2_12_0);
-        TransportClusterManagerTermCheckTests.Request request = new TransportClusterManagerTermCheckTests.Request();
-
-        PlainActionFuture<TransportClusterManagerTermCheckTests.Response> listener = new PlainActionFuture<>();
-        new TransportClusterManagerTermCheckTests.Action("internal:testAction", transportService, clusterService, threadPool).execute(
-            request,
-            listener
-        );
-
-        assertThat(transport.capturedRequests().length, equalTo(1));
-        CapturingTransport.CapturedRequest capturedRequest = transport.capturedRequests()[0];
-        assertTrue(capturedRequest.node.isClusterManagerNode());
-        assertThat(capturedRequest.request, equalTo(request));
-        assertThat(capturedRequest.action, equalTo("internal:testAction"));
-
-        TransportClusterManagerTermCheckTests.Response response = new TransportClusterManagerTermCheckTests.Response();
-        transport.handleResponse(capturedRequest.requestId, response);
-        assertTrue(listener.isDone());
-        assertThat(listener.get(), equalTo(response));
-
-    }
-
     private void setUpCluster(Version clusterManagerVersion) {
         localNode = new DiscoveryNode(
             "local_node",

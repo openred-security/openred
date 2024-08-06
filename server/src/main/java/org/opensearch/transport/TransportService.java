@@ -35,7 +35,6 @@ package org.opensearch.transport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.ParameterizedMessage;
-import org.opensearch.LegacyESVersion;
 import org.opensearch.OpenSearchServerException;
 import org.opensearch.Version;
 import org.opensearch.action.ActionListenerResponseHandler;
@@ -750,22 +749,14 @@ public class TransportService extends AbstractLifecycleComponent
             super(in);
             discoveryNode = in.readOptionalWriteable(DiscoveryNode::new);
             clusterName = new ClusterName(in);
-            Version tmpVersion = in.readVersion();
-            if (in.getVersion().onOrBefore(LegacyESVersion.V_7_10_2)) {
-                tmpVersion = LegacyESVersion.V_7_10_2;
-            }
-            version = tmpVersion;
+            version = in.readVersion();
         }
 
         @Override
         public void writeTo(StreamOutput out) throws IOException {
             out.writeOptionalWriteable(discoveryNode);
             clusterName.writeTo(out);
-            if (out.getVersion().before(Version.V_1_0_0)) {
-                out.writeVersion(LegacyESVersion.V_7_10_2);
-            } else {
-                out.writeVersion(version);
-            }
+            out.writeVersion(version);
         }
 
         public DiscoveryNode getDiscoveryNode() {

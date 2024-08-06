@@ -5,7 +5,7 @@ on:
 
 jobs:
   copy-issue-labels:
-    if: github.repository == 'opensearch-project/OpenSearch'
+    if: github.repository == 'openred-security/openred'
     runs-on: ubuntu-latest
     permissions:
       issues: read

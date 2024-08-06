@@ -32,9 +32,7 @@
 
 package org.opensearch.search.builder;
 
-import org.opensearch.LegacyESVersion;
 import org.opensearch.OpenSearchException;
-import org.opensearch.Version;
 import org.opensearch.common.Booleans;
 import org.opensearch.common.Nullable;
 import org.opensearch.common.annotation.PublicApi;
@@ -270,27 +268,11 @@ public final class SearchSourceBuilder implements Writeable, ToXContentObject, R
         searchAfterBuilder = in.readOptionalWriteable(SearchAfterBuilder::new);
         sliceBuilder = in.readOptionalWriteable(SliceBuilder::new);
         collapse = in.readOptionalWriteable(CollapseBuilder::new);
-        if (in.getVersion().onOrAfter(LegacyESVersion.V_7_0_0)) {
-            trackTotalHitsUpTo = in.readOptionalInt();
-        } else {
-            trackTotalHitsUpTo = in.readBoolean() ? TRACK_TOTAL_HITS_ACCURATE : TRACK_TOTAL_HITS_DISABLED;
+        trackTotalHitsUpTo = in.readOptionalInt();
+        if (in.readBoolean()) {
+            fetchFields = in.readList(FieldAndFormat::new);
         }
-        if (in.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            if (in.readBoolean()) {
-                fetchFields = in.readList(FieldAndFormat::new);
-            }
-        }
-        if (in.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            pointInTimeBuilder = in.readOptionalWriteable(PointInTimeBuilder::new);
-        }
-        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
-            if (in.readBoolean()) {
-                searchPipelineSource = in.readMap();
-            }
-        }
-        if (in.getVersion().onOrAfter(Version.V_1_0_0)) {
-            includeNamedQueriesScore = in.readOptionalBoolean();
-        }
+        pointInTimeBuilder = in.readOptionalWriteable(PointInTimeBuilder::new);
     }
 
     @Override
@@ -344,29 +326,12 @@ public final class SearchSourceBuilder implements Writeable, ToXContentObject, R
         out.writeOptionalWriteable(searchAfterBuilder);
         out.writeOptionalWriteable(sliceBuilder);
         out.writeOptionalWriteable(collapse);
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_0_0)) {
-            out.writeOptionalInt(trackTotalHitsUpTo);
-        } else {
-            out.writeBoolean(trackTotalHitsUpTo == null ? true : trackTotalHitsUpTo > SearchContext.TRACK_TOTAL_HITS_DISABLED);
+        out.writeOptionalInt(trackTotalHitsUpTo);
+        out.writeBoolean(fetchFields != null);
+        if (fetchFields != null) {
+            out.writeList(fetchFields);
         }
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            out.writeBoolean(fetchFields != null);
-            if (fetchFields != null) {
-                out.writeList(fetchFields);
-            }
-        }
-        if (out.getVersion().onOrAfter(LegacyESVersion.V_7_10_0)) {
-            out.writeOptionalWriteable(pointInTimeBuilder);
-        }
-        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
-            out.writeBoolean(searchPipelineSource != null);
-            if (searchPipelineSource != null) {
-                out.writeMap(searchPipelineSource);
-            }
-        }
-        if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
-            out.writeOptionalBoolean(includeNamedQueriesScore);
-        }
+        out.writeOptionalWriteable(pointInTimeBuilder);
     }
 
     /**

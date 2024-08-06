@@ -32,9 +32,7 @@
 
 package org.opensearch.monitor.fs;
 
-import org.opensearch.LegacyESVersion;
 import org.opensearch.Version;
-import org.opensearch.cluster.DiskUsage;
 import org.opensearch.common.Nullable;
 import org.opensearch.common.annotation.PublicApi;
 import org.opensearch.core.common.io.stream.StreamInput;
@@ -375,16 +373,15 @@ public class FsInfo implements Iterable<FsInfo.Path>, Writeable, ToXContentFragm
             out.writeLong(previousSectorsRead);
             out.writeLong(currentSectorsWritten);
             out.writeLong(previousSectorsWritten);
-            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
-                out.writeLong(currentReadTime);
-                out.writeLong(previousReadTime);
-                out.writeLong(currentWriteTime);
-                out.writeLong(previousWriteTime);
-                out.writeLong(currentQueueSize);
-                out.writeLong(previousQueueSize);
-                out.writeLong(currentIOTime);
-                out.writeLong(previousIOTime);
-            }
+            out.writeLong(currentReadTime);
+            out.writeLong(previousReadTime);
+            out.writeLong(currentWriteTime);
+            out.writeLong(previousWriteTime);
+            out.writeLong(currentQueueSize);
+            out.writeLong(previousQueueSize);
+            out.writeLong(currentIOTime);
+            out.writeLong(previousIOTime);
+
         }
 
         public long operations() {
@@ -568,12 +565,11 @@ public class FsInfo implements Iterable<FsInfo.Path>, Writeable, ToXContentFragm
             out.writeLong(totalWriteOperations);
             out.writeLong(totalReadKilobytes);
             out.writeLong(totalWriteKilobytes);
-            if (out.getVersion().onOrAfter(Version.V_1_0_0)) {
-                out.writeLong(totalReadTime);
-                out.writeLong(totalWriteTime);
-                out.writeLong(totalQueueSize);
-                out.writeLong(totalIOTimeInMillis);
-            }
+            out.writeLong(totalReadTime);
+            out.writeLong(totalWriteTime);
+            out.writeLong(totalQueueSize);
+            out.writeLong(totalIOTimeInMillis);
+
         }
 
         public DeviceStats[] getDevicesStats() {
@@ -679,10 +675,6 @@ public class FsInfo implements Iterable<FsInfo.Path>, Writeable, ToXContentFragm
             paths[i] = new Path(in);
         }
         this.total = total();
-        if (in.getVersion().before(LegacyESVersion.V_7_10_0)) {
-            in.readOptionalWriteable(DiskUsage::new); // previously leastDiskEstimate
-            in.readOptionalWriteable(DiskUsage::new); // previously mostDiskEstimate
-        }
     }
 
     @Override
@@ -692,10 +684,6 @@ public class FsInfo implements Iterable<FsInfo.Path>, Writeable, ToXContentFragm
         out.writeVInt(paths.length);
         for (Path path : paths) {
             path.writeTo(out);
-        }
-        if (out.getVersion().before(LegacyESVersion.V_7_10_0)) {
-            out.writeOptionalWriteable(null); // previously leastDiskEstimate
-            out.writeOptionalWriteable(null); // previously mostDiskEstimate
         }
     }
 
