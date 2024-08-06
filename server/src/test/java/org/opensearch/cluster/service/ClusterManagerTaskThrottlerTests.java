@@ -78,7 +78,6 @@ public class ClusterManagerTaskThrottlerTests extends OpenSearchTestCase {
         }
     }
 
-
     public void testValidateSettingsForTaskWihtoutRetryOnDataNode() {
         DiscoveryNode clusterManagerNode = getClusterManagerNode(Version.V_1_0_0);
         DiscoveryNode dataNode = getDataNode(Version.V_1_0_0);

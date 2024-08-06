@@ -180,8 +180,6 @@ public class UpdateRequest extends InstanceShardOperationRequest<UpdateRequest>
             doc = new IndexRequest(shardId, in);
         }
 
-        
-
         fetchSourceContext = in.readOptionalWriteable(FetchSourceContext::new);
         if (in.readBoolean()) {
             upsertRequest = new IndexRequest(shardId, in);

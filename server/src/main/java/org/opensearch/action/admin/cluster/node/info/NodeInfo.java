@@ -206,7 +206,7 @@ public class NodeInfo extends BaseNodeResponse {
             out.writeBoolean(true);
             out.writeLong(totalIndexingBuffer.getBytes());
         }
-        if (settings == null)    {
+        if (settings == null) {
             out.writeBoolean(false);
         } else {
             out.writeBoolean(true);
@@ -221,7 +221,7 @@ public class NodeInfo extends BaseNodeResponse {
         out.writeOptionalWriteable(getInfo(PluginsAndModules.class));
         out.writeOptionalWriteable(getInfo(IngestInfo.class));
         out.writeOptionalWriteable(getInfo(AggregationInfo.class));
-        
+
     }
 
     public static NodeInfo.Builder builder(Version version, Build build, DiscoveryNode node) {

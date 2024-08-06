@@ -32,7 +32,6 @@
 
 package org.opensearch.action.admin.cluster.snapshots.restore;
 
-import org.opensearch.Version;
 import org.opensearch.action.ActionRequestValidationException;
 import org.opensearch.action.support.IndicesOptions;
 import org.opensearch.action.support.clustermanager.ClusterManagerNodeRequest;
@@ -155,7 +154,7 @@ public class RestoreSnapshotRequest extends ClusterManagerNodeRequest<RestoreSna
         snapshotUuid = in.readOptionalString();
         storageType = in.readEnum(StorageType.class);
         sourceRemoteStoreRepository = in.readOptionalString();
-        
+
     }
 
     @Override

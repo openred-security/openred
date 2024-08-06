@@ -33,7 +33,6 @@
 package org.opensearch.monitor.fs;
 
 import org.opensearch.Version;
-import org.opensearch.cluster.DiskUsage;
 import org.opensearch.common.Nullable;
 import org.opensearch.common.annotation.PublicApi;
 import org.opensearch.core.common.io.stream.StreamInput;
@@ -382,7 +381,7 @@ public class FsInfo implements Iterable<FsInfo.Path>, Writeable, ToXContentFragm
             out.writeLong(previousQueueSize);
             out.writeLong(currentIOTime);
             out.writeLong(previousIOTime);
-            
+
         }
 
         public long operations() {
@@ -570,7 +569,7 @@ public class FsInfo implements Iterable<FsInfo.Path>, Writeable, ToXContentFragm
             out.writeLong(totalWriteTime);
             out.writeLong(totalQueueSize);
             out.writeLong(totalIOTimeInMillis);
-            
+
         }
 
         public DeviceStats[] getDevicesStats() {

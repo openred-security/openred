@@ -32,8 +32,6 @@
 
 package org.opensearch.action.search;
 
-import org.opensearch.LegacyESVersion;
-import org.opensearch.Version;
 import org.opensearch.action.ActionListenerResponseHandler;
 import org.opensearch.action.IndicesRequest;
 import org.opensearch.action.OriginalIndices;

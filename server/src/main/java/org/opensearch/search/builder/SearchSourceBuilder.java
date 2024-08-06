@@ -33,7 +33,6 @@
 package org.opensearch.search.builder;
 
 import org.opensearch.OpenSearchException;
-import org.opensearch.Version;
 import org.opensearch.common.Booleans;
 import org.opensearch.common.Nullable;
 import org.opensearch.common.annotation.PublicApi;

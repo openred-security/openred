@@ -426,7 +426,7 @@ public class MultiSearchRequestTests extends OpenSearchTestCase {
             originalRequest.requests().get(0).getCancelAfterTimeInterval(),
             deserializedRequest.requests().get(0).getCancelAfterTimeInterval()
         );
-        
+
     }
 
     public void testWritingExpandWildcards() throws IOException {
