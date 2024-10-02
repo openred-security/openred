@@ -2,65 +2,63 @@ package launcher
 
 import (
 	"context"
-	"openred/openred-agent/process"
 	"fmt"
 	"os"
 	"os/exec"
+	"gopkg.in/yaml.v2"
 )
 
 type plugin struct {
-	name      string
-	path      string
-	arguments []string
+	Name      string
+	Path      string
+	Arguments []string
 }
 
 var plugins = []plugin{}
 
-func Init(ctx context.Context) {
-	current_path, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-	}
-	Add(ctx, "sample", current_path+"/plugins/sample/plugin-sample", []string{" "})
+type Config struct {
+	Binary string   `yaml:"binary"`
+	Args   []string `yaml:"args"`
 }
 
-func Add(ctx context.Context, name string, path string, arguments []string) {
+func Init(ctx context.Context) {
+	// Añadir el plugin "last_logs"
+	Add(ctx, "last_logs", "./plugins/last_logs/config.yml")
+}
+
+func Add(ctx context.Context, name string, configPath string) {
+	// Leer configuración desde el archivo YAML
+	config := Config{}
+	configFile, err := os.ReadFile(configPath)
+	if err != nil {
+		fmt.Println("Error leyendo config.yml:", err)
+		return
+	}
+	err = yaml.Unmarshal(configFile, &config)
+	if err != nil {
+		fmt.Println("Error en la configuración YAML:", err)
+		return
+	}
+
 	plugin := plugin{
-		name:      name,
-		path:      path,
-		arguments: arguments,
+		Name:      name,
+		Path:      config.Binary,
+		Arguments: config.Args,
 	}
 	plugins = append(plugins, plugin)
 }
 
-func Run(ctx context.Context, plugin plugin) {
-
-	proc, err := process.Start(
-		plugin.path,
-		process.WithContext(ctx),
-		process.WithArgs(plugin.arguments),
-		process.WithCmdOptions(func(c *exec.Cmd) error {
-			c.Stdout = os.Stdout
-			c.Stderr = os.Stderr
-			return nil
-		}))
-	if err != nil {
-		fmt.Println("Error")
-		fmt.Println(err)
-	}
-
-	resChan := make(chan *os.ProcessState)
-	go func() {
-		procState, _ := proc.Process.Wait()
-		resChan <- procState
-	}()
-
+func Plugins() []plugin {
+	return plugins
 }
 
-func RunAll(ctx context.Context) {
+func Run(ctx context.Context, plugin plugin) {
+	cmd := exec.CommandContext(ctx, plugin.Path, plugin.Arguments...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 
-	for _, plugin := range plugins {
-		Run(ctx, plugin)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println("Error ejecutando el plugin:", err)
 	}
-
 }
