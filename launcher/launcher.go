@@ -1,64 +1,85 @@
 package launcher
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"os"
 	"os/exec"
-	"gopkg.in/yaml.v2"
+	"path/filepath"
+	"time"
+	"gopkg.in/yaml.v3"
 )
 
-type plugin struct {
-	Name      string
-	Path      string
-	Arguments []string
+type PluginConfig struct {
+	Name   string `yaml:"name"`
+	Binary string `yaml:"binary"`
 }
 
-var plugins = []plugin{}
-
-type Config struct {
-	Binary string   `yaml:"binary"`
-	Args   []string `yaml:"args"`
+type Plugin struct {
+	Name   string
+	Binary string
 }
 
-func Init(ctx context.Context) {
-	// Añadir el plugin "last_logs"
-	Add(ctx, "last_logs", "./plugins/last_logs/config.yml")
-}
+func LoadPlugins(pluginDir string) ([]Plugin, error) {
+	var plugins []Plugin
 
-func Add(ctx context.Context, name string, configPath string) {
-	// Leer configuración desde el archivo YAML
-	config := Config{}
-	configFile, err := os.ReadFile(configPath)
+	err := filepath.Walk(pluginDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Only process directories at the first level (the plugin directories)
+		if info.IsDir() && path != pluginDir {
+			configPath := filepath.Join(path, "config.yml")
+			if _, err := os.Stat(configPath); os.IsNotExist(err) {
+				return nil // Skip if config.yml doesn't exist
+			}
+
+			// Read the config.yml file
+			configFile, err := os.ReadFile(configPath)
+			if err != nil {
+				return err
+			}
+
+			var pluginConfig PluginConfig
+			err = yaml.Unmarshal(configFile, &pluginConfig)
+			if err != nil {
+				return err
+			}
+
+			plugin := Plugin{
+				Name:   pluginConfig.Name,
+				Binary: filepath.Join(path, pluginConfig.Binary),
+			}
+
+			plugins = append(plugins, plugin)
+		}
+
+		return nil
+	})
+
 	if err != nil {
-		fmt.Println("Error leyendo config.yml:", err)
-		return
-	}
-	err = yaml.Unmarshal(configFile, &config)
-	if err != nil {
-		fmt.Println("Error en la configuración YAML:", err)
-		return
+		return nil, err
 	}
 
-	plugin := plugin{
-		Name:      name,
-		Path:      config.Binary,
-		Arguments: config.Args,
-	}
-	plugins = append(plugins, plugin)
+	return plugins, nil
 }
 
-func Plugins() []plugin {
-	return plugins
-}
+func RunPlugin(plugin Plugin) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
 
-func Run(ctx context.Context, plugin plugin) {
-	cmd := exec.CommandContext(ctx, plugin.Path, plugin.Arguments...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	cmd := exec.CommandContext(ctx, plugin.Binary)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
 
+	// Run the plugin binary
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Error ejecutando el plugin:", err)
+		return "", fmt.Errorf("failed to run plugin: %s, error: %v, stderr: %s", plugin.Name, err, stderr.String())
 	}
+
+	return stdout.String(), nil
 }
