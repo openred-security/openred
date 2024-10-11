@@ -1,66 +1,85 @@
 package launcher
 
 import (
+	"bytes"
 	"context"
-	"openred/openred-agent/process"
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"time"
+	"gopkg.in/yaml.v3"
 )
 
-type plugin struct {
-	name      string
-	path      string
-	arguments []string
+type PluginConfig struct {
+	Name   string `yaml:"name"`
+	Binary string `yaml:"binary"`
 }
 
-var plugins = []plugin{}
+type Plugin struct {
+	Name   string
+	Binary string
+}
 
-func Init(ctx context.Context) {
-	current_path, err := os.Getwd()
+func LoadPlugins(pluginDir string) ([]Plugin, error) {
+	var plugins []Plugin
+
+	err := filepath.Walk(pluginDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Only process directories at the first level (the plugin directories)
+		if info.IsDir() && path != pluginDir {
+			configPath := filepath.Join(path, "config.yml")
+			if _, err := os.Stat(configPath); os.IsNotExist(err) {
+				return nil // Skip if config.yml doesn't exist
+			}
+
+			// Read the config.yml file
+			configFile, err := os.ReadFile(configPath)
+			if err != nil {
+				return err
+			}
+
+			var pluginConfig PluginConfig
+			err = yaml.Unmarshal(configFile, &pluginConfig)
+			if err != nil {
+				return err
+			}
+
+			plugin := Plugin{
+				Name:   pluginConfig.Name,
+				Binary: filepath.Join(path, pluginConfig.Binary),
+			}
+
+			plugins = append(plugins, plugin)
+		}
+
+		return nil
+	})
+
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
-	Add(ctx, "sample", current_path+"/plugins/sample/plugin-sample", []string{" "})
+
+	return plugins, nil
 }
 
-func Add(ctx context.Context, name string, path string, arguments []string) {
-	plugin := plugin{
-		name:      name,
-		path:      path,
-		arguments: arguments,
-	}
-	plugins = append(plugins, plugin)
-}
+func RunPlugin(plugin Plugin) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
 
-func Run(ctx context.Context, plugin plugin) {
+	cmd := exec.CommandContext(ctx, plugin.Binary)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
 
-	proc, err := process.Start(
-		plugin.path,
-		process.WithContext(ctx),
-		process.WithArgs(plugin.arguments),
-		process.WithCmdOptions(func(c *exec.Cmd) error {
-			c.Stdout = os.Stdout
-			c.Stderr = os.Stderr
-			return nil
-		}))
+	// Run the plugin binary
+	err := cmd.Run()
 	if err != nil {
-		fmt.Println("Error")
-		fmt.Println(err)
+		return "", fmt.Errorf("failed to run plugin: %s, error: %v, stderr: %s", plugin.Name, err, stderr.String())
 	}
 
-	resChan := make(chan *os.ProcessState)
-	go func() {
-		procState, _ := proc.Process.Wait()
-		resChan <- procState
-	}()
-
-}
-
-func RunAll(ctx context.Context) {
-
-	for _, plugin := range plugins {
-		Run(ctx, plugin)
-	}
-
+	return stdout.String(), nil
 }
