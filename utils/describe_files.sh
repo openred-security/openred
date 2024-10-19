@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Source folder
-SOURCE_FOLDER="openred"
+SOURCE_FOLDER="../"
 
 # Destination file
-DEST_FILE="file_contents.txt"
+DEST_FILE="../../file_contents.txt"
 
 # Clear the destination file if it already exists
 > "$DEST_FILE"
@@ -22,7 +22,7 @@ process_files() {
   for FILE in "$1"/*; do
     if [[ -f "$FILE" ]]; then
       # Skip LICENSE files and .sum files
-      if [[ "$(basename "$FILE")" == "LICENSE" ]] || [[ "$FILE" == *.sum ]]; then
+      if [[ "$(basename "$FILE")" == "LICENSE" ]] || [[ "$FILE" == *.sum ]] || [[ "$(basename "$FILE")" == "openred" ]]; then
         echo "Skipping file: $(basename "$FILE")"
         continue
       fi
