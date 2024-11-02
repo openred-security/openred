@@ -11,3 +11,6 @@
 
 # Binaries
 openred
+
+# Catalog run folder
+catalog/*/run
