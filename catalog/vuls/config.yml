@@ -1,0 +1,8 @@
+name: vuls_scan
+binary: ./bin/vuls
+
+downloads:
+  linux_amd64: "https://github.com/future-architect/vuls/releases/download/v0.x.y/vuls_linux_amd64.tar.gz"
+  linux_arm64: "https://github.com/future-architect/vuls/releases/download/v0.x.y/vuls_linux_arm64.tar.gz"
+  darwin_amd64: "https://github.com/future-architect/vuls/releases/download/v0.x.y/vuls_darwin_amd64.tar.gz"
+  darwin_arm64: "https://github.com/future-architect/vuls/releases/download/v0.x.y/vuls_darwin_arm64.tar.gz"

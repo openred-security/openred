@@ -1,13 +1,9 @@
 package launcher
 
 import (
-	"bytes"
-	"context"
-	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"time"
+
 	"gopkg.in/yaml.v3"
 )
 
@@ -64,22 +60,4 @@ func LoadPlugins(pluginDir string) ([]Plugin, error) {
 	}
 
 	return plugins, nil
-}
-
-func RunPlugin(plugin Plugin) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-
-	cmd := exec.CommandContext(ctx, plugin.Binary)
-	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	// Run the plugin binary
-	err := cmd.Run()
-	if err != nil {
-		return "", fmt.Errorf("failed to run plugin: %s, error: %v, stderr: %s", plugin.Name, err, stderr.String())
-	}
-
-	return stdout.String(), nil
 }

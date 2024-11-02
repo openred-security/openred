@@ -4,71 +4,59 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 
-	"openred/openred/launcher"
+	"openred/openred/plugin"
 )
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: openred [command] [plugin]")
-		os.Exit(1)
+		log.Fatal("Usage: openred <command> [plugin]")
 	}
 
-	pluginsDir := filepath.Join(".", "plugins")
+	manager := plugin.NewManager()
+	catalogDir := "./catalog" // Adjust as necessary
 
-	// Load all plugins from the plugins directory
-	plugins, err := launcher.LoadPlugins(pluginsDir)
-	if err != nil {
+	// Load plugins from the catalog directory
+	if err := manager.LoadPlugins(catalogDir); err != nil {
 		log.Fatalf("Error loading plugins: %v", err)
 	}
 
 	command := os.Args[1]
 
 	switch command {
-	case "plugin", "plugins":
-		if len(os.Args) < 3 || os.Args[2] != "list" {
-			fmt.Println("Usage: openred plugin list")
-			os.Exit(1)
-		}
-
+	case "list":
 		// List all loaded plugins
-		for _, plugin := range plugins {
-			fmt.Printf("Plugin: %s, Binary: %s\n", plugin.Name, plugin.Binary)
+		manager.ListPlugins()
+
+	case "download":
+		// Download a specific plugin
+		if len(os.Args) < 3 {
+			log.Fatal("Usage: openred download <plugin>")
 		}
+		pluginID := os.Args[2]
+		err := manager.DownloadAndDecompressPlugin(pluginID, catalogDir)
+		if err != nil {
+			log.Fatalf("Failed to download plugin %s: %v", pluginID, err)
+		}
+		fmt.Printf("Plugin %s downloaded successfully\n", pluginID)
 
 	case "run":
+		// Run a specific plugin, downloading if necessary
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: openred run [plugin_name]")
-			os.Exit(1)
+			log.Fatal("Usage: openred run <plugin>")
+		}
+		pluginID := os.Args[2]
+		pluginInstance, exists := manager.GetPlugin(pluginID)
+		if !exists {
+			log.Fatalf("Plugin %s not found", pluginID)
 		}
 
-		pluginName := os.Args[2]
-
-		// Find the plugin by name
-		var pluginToRun *launcher.Plugin
-		for _, plugin := range plugins {
-			if plugin.Name == pluginName {
-				pluginToRun = &plugin
-				break
-			}
+		if err := pluginInstance.RunPlugin(); err != nil {
+			log.Fatalf("Failed to run plugin %s: %v", pluginID, err)
 		}
-
-		if pluginToRun == nil {
-			fmt.Printf("Plugin '%s' not found.\n", pluginName)
-			os.Exit(1)
-		}
-
-		// Run the plugin
-		output, err := launcher.RunPlugin(*pluginToRun)
-		if err != nil {
-			log.Fatalf("Error running plugin: %v", err)
-		}
-
-		fmt.Printf("Output from plugin '%s':\n%s", pluginToRun.Name, output)
+		fmt.Printf("Plugin %s executed successfully\n", pluginID)
 
 	default:
-		fmt.Println("Unknown command. Usage: openred [plugin|run] [plugin_name]")
-		os.Exit(1)
+		log.Fatalf("Unknown command: %s", command)
 	}
 }
