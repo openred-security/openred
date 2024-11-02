@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Default values
+total_logs=10
+logs_per_second=10
+
+# Get arguments if provided
+if [ $# -ge 1 ]; then
+  total_logs=$1
+fi
+
+if [ $# -ge 2 ]; then
+  logs_per_second=$2
+fi
+
+# List of sample log levels and messages
+log_levels=("INFO" "WARNING" "ERROR" "DEBUG")
+messages=("User logged in" "File opened" "Network request received" "Process started" "Configuration loaded" "Disk space low" "Connection lost" "System update available")
+
+# Generate logs
+for ((i=0; i<total_logs; i++)); do
+  # Current timestamp in ISO 8601 format
+  timestamp=$(date +"%Y-%m-%dT%H:%M:%S")
+
+  # Select random log level and message
+  log_level=${log_levels[$RANDOM % ${#log_levels[@]}]}
+  message=${messages[$RANDOM % ${#messages[@]}]}
+
+  # Print log
+  echo "$timestamp [$log_level] $message"
+
+  # Calculate delay based on logs per second
+  sleep_time=$(bc -l <<< "1 / $logs_per_second")
+  sleep $sleep_time
+done

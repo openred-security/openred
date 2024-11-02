@@ -1,0 +1,35 @@
+# Copyright (C) 2024 OpenRed Security Project
+# This file is part of OpenRed and is licensed under the GNU General Public License v3.0.
+# For more details, see <https://www.gnu.org/licenses/gpl-3.0.html>.
+# GitHub repository: <https://github.com/openred-security/openred>
+
+id: "stdout_sample"
+name: "Last Logs Collector"
+description: "A plugin that collects the latest system logs."
+site: "https://openred.com"
+docs: "https://openred.com/docs/stdout_sample"
+target: "agent"  # options: engine, console, agent
+license: "GPL-3.0"
+category: "log-collection"
+version: "1.0.0"
+catalog_url: "https://catalog.openred.com/stdout_sample"
+
+download_url:
+  macos:
+    arm64: "https://openred-catalog.s3.us-east-1.amazonaws.com/stdout_sample/macos/arm/stdout_sample"
+    intel64: "https://openred-catalog.s3.us-east-1.amazonaws.com/stdout_sample/macos/intel/stdout_sample"
+  linux:
+    x86_64: "https://openred-catalog.s3.us-east-1.amazonaws.com/stdout_sample/linux/x86_64/stdout_sample"
+    arm64: "https://openred-catalog.s3.us-east-1.amazonaws.com/stdout_sample/linux/arm64/stdout_sample"
+  windows:
+    x86_64: "https://openred-catalog.s3.us-east-1.amazonaws.com/stdout_sample/windows/x86_64/stdout_sample"
+
+
+# Binary details
+binary_name: "stdout_sample"  # The executable name after download/extraction
+#args:
+#  - "--scan"
+#  - "--verbose"
+env:
+  - "ENV_VAR1=value1"
+  - "ENV_VAR2=value2"

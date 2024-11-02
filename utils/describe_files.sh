@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Source folder
-SOURCE_FOLDER="../"
+SOURCE_FOLDER="../process"
 
 # Destination file
 DEST_FILE="../../file_contents.txt"
